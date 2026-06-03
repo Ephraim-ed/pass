@@ -221,6 +221,7 @@ export default function SpinBottleScreen() {
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
             <SpinWheel
               players={state.players}
+              avatars={state.avatars ?? {}}
               targetIndex={game.targetIndex}
               isSpinning={game.isSpinning}
               onSpin={game.spin}

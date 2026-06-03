@@ -1,15 +1,16 @@
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
 
 type Props = {
   name: string;
   accentColor?: string;
+  avatar?: string;
   onRemove?: () => void;
   removable?: boolean;
 };
 
-export default function PlayerChip({ name, accentColor = COLORS.mint, onRemove, removable = false }: Props) {
+export default function PlayerChip({ name, accentColor = COLORS.mint, avatar, onRemove, removable = false }: Props) {
   return (
     <View
       style={[
@@ -18,7 +19,11 @@ export default function PlayerChip({ name, accentColor = COLORS.mint, onRemove, 
       ]}
     >
       <View style={styles.avatar}>
-        <Text style={styles.initial}>{name.charAt(0).toUpperCase()}</Text>
+        {avatar ? (
+          <Image source={{ uri: avatar }} style={{ width: 26, height: 26, borderRadius: 13 }} resizeMode="cover" />
+        ) : (
+          <Text style={styles.initial}>{name.charAt(0).toUpperCase()}</Text>
+        )}
       </View>
       <Text style={styles.name} numberOfLines={1}>{name}</Text>
       {removable && onRemove && (

@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
 import Svg, { Circle, Path } from 'react-native-svg';
 import { GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
@@ -10,6 +10,7 @@ import StickerButton from '@/components/ui/StickerButton';
 import Bub from '@/components/mascot/Bub';
 import { useApp } from '@/store/useApp';
 import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { promptAndPickAvatar } from '@/utils/pickAvatar';
 
 // ── Intro slide definitions ────────────────────────────────────
 
@@ -54,15 +55,25 @@ const CHIP_COLORS = [
   COLORS.mint, COLORS.pink, COLORS.sky, COLORS.purple, COLORS.tomato, COLORS.yellow,
 ];
 
+
 function PlayerChipOnboarding({
   name,
   color,
+  avatar,
   onRemove,
+  onAvatarChange,
 }: {
   name: string;
   color: string;
+  avatar?: string;
   onRemove: () => void;
+  onAvatarChange: (uri: string) => void;
 }) {
+  async function handleAvatarPress() {
+    const uri = await promptAndPickAvatar(name);
+    if (uri) onAvatarChange(uri);
+  }
+
   return (
     <View
       style={{
@@ -72,28 +83,36 @@ function PlayerChipOnboarding({
         borderWidth: 2,
         borderColor: COLORS.ink,
         borderRadius: RADIUS.pill,
-        paddingLeft: 6,
+        paddingLeft: 4,
         paddingRight: 10,
-        paddingVertical: 5,
+        paddingVertical: 4,
         marginRight: 8,
         marginBottom: 8,
         gap: 6,
       }}
     >
-      <View
-        style={{
-          width: 22,
-          height: 22,
-          borderRadius: 11,
-          backgroundColor: COLORS.ink,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Text style={{ fontFamily: FONTS.display, fontSize: 11, color: COLORS.cream }}>
-          {name.charAt(0).toUpperCase()}
-        </Text>
-      </View>
+      {/* Tappable avatar */}
+      <Pressable onPress={handleAvatarPress}>
+        <View
+          style={{
+            width: 26,
+            height: 26,
+            borderRadius: 13,
+            backgroundColor: COLORS.ink,
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {avatar ? (
+            <Image source={{ uri: avatar }} style={{ width: 26, height: 26 }} resizeMode="cover" />
+          ) : (
+            <Text style={{ fontFamily: FONTS.display, fontSize: 12, color: COLORS.cream }}>
+              {name.charAt(0).toUpperCase()}
+            </Text>
+          )}
+        </View>
+      </Pressable>
       <Text style={{ fontFamily: FONTS.uiBold, fontSize: 13, color: COLORS.ink }}>{name}</Text>
       <Pressable onPress={onRemove} hitSlop={8}>
         <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink, lineHeight: 17 }}>×</Text>
@@ -107,6 +126,7 @@ function PlayerChipOnboarding({
 export default function OnboardingScreen() {
   const [step, setStep] = useState(0);
   const [players, setPlayers] = useState<string[]>([]);
+  const [avatars, setAvatars] = useState<Record<string, string>>({});
   const [nameInput, setNameInput] = useState('');
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
@@ -139,24 +159,27 @@ export default function OnboardingScreen() {
     }
   });
 
-  function addPlayer() {
+  async function addPlayer() {
     const name = nameInput.trim();
-    if (name && !players.includes(name)) {
-      setPlayers((prev) => [...prev, name]);
-    }
+    if (!name || players.includes(name)) { setNameInput(''); return; }
+    setPlayers((prev) => [...prev, name]);
     setNameInput('');
+    const uri = await promptAndPickAvatar(name);
+    if (uri) setPlayerAvatar(name, uri);
     inputRef.current?.focus();
   }
 
   function removePlayer(name: string) {
     setPlayers((prev) => prev.filter((p) => p !== name));
+    setAvatars((prev) => { const { [name]: _, ...rest } = prev; return rest; });
+  }
+
+  function setPlayerAvatar(name: string, uri: string) {
+    setAvatars((prev) => ({ ...prev, [name]: uri }));
   }
 
   function finish() {
-    update({
-      players: players.length >= 2 ? players : players,
-      hasOnboarded: true,
-    });
+    update({ players, avatars, hasOnboarded: true });
     router.replace('/(tabs)/home');
   }
 
@@ -348,7 +371,9 @@ export default function OnboardingScreen() {
                     key={name}
                     name={name}
                     color={CHIP_COLORS[i % CHIP_COLORS.length]}
+                    avatar={avatars[name]}
                     onRemove={() => removePlayer(name)}
+                    onAvatarChange={(uri) => setPlayerAvatar(name, uri)}
                   />
                 ))}
               </View>

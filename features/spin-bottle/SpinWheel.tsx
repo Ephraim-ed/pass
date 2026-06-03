@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import React, { useEffect } from 'react';
-import { Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   cancelAnimation,
@@ -17,6 +17,7 @@ import { COLORS, FONTS } from '@/theme/tokens';
 
 type Props = {
   players: string[];
+  avatars: Record<string, string>;
   targetIndex: number | null;
   isSpinning: boolean;
   onSpin: (velocity: number, onAngle: (finalAngle: number, duration: number) => void) => void;
@@ -29,7 +30,7 @@ const PLAYER_COLORS = [
 const ORBIT_RADIUS = 120;
 const CENTER = 160;
 
-export default function SpinWheel({ players, targetIndex, isSpinning, onSpin }: Props) {
+export default function SpinWheel({ players, avatars, targetIndex, isSpinning, onSpin }: Props) {
   const bottleRot = useSharedValue(0);
   const hintOpacity = useSharedValue(0);
   const hintX = useSharedValue(0);
@@ -123,6 +124,7 @@ export default function SpinWheel({ players, targetIndex, isSpinning, onSpin }: 
             const x = CENTER + ORBIT_RADIUS * Math.cos(angle) - 28;
             const y = CENTER + ORBIT_RADIUS * Math.sin(angle) - 28;
             const isSelected = targetIndex === i && !isSpinning;
+            const avatar = avatars?.[name];
             return (
               <View
                 key={name}
@@ -134,16 +136,21 @@ export default function SpinWheel({ players, targetIndex, isSpinning, onSpin }: 
                   height: 56,
                   borderRadius: 28,
                   backgroundColor: isSelected ? COLORS.pink : PLAYER_COLORS[i % PLAYER_COLORS.length],
-                  borderWidth: 2.5,
-                  borderColor: COLORS.ink,
+                  borderWidth: isSelected ? 3 : 2.5,
+                  borderColor: isSelected ? COLORS.pink : COLORS.ink,
                   alignItems: 'center',
                   justifyContent: 'center',
+                  overflow: 'hidden',
                   transform: [{ scale: isSelected ? 1.15 : 1 }],
                 }}
               >
-                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 11, color: COLORS.ink, textAlign: 'center' }}>
-                  {name}
-                </Text>
+                {avatar ? (
+                  <Image source={{ uri: avatar }} style={{ width: 56, height: 56 }} resizeMode="cover" />
+                ) : (
+                  <Text style={{ fontFamily: FONTS.uiBold, fontSize: 11, color: COLORS.ink, textAlign: 'center' }}>
+                    {name}
+                  </Text>
+                )}
               </View>
             );
           })}

@@ -20,6 +20,7 @@ import GameIcon from '@/components/game-icons/GameIcon';
 import { GAMES, Game, CATEGORIES } from '@/data/games';
 import { useApp } from '@/store/useApp';
 import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { promptAndPickAvatar } from '@/utils/pickAvatar';
 
 // ── Decorative primitives ─────────────────────────────────────
 
@@ -138,7 +139,7 @@ const ACCENT_COLORS = [COLORS.mint, COLORS.yellow, COLORS.pink, COLORS.sky, COLO
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { state, setCategory, addPlayer, removePlayer } = useApp();
+  const { state, setCategory, addPlayer, removePlayer, setAvatar } = useApp();
   const [addingPlayer, setAddingPlayer] = useState(false);
   const [newName, setNewName] = useState('');
 
@@ -157,10 +158,13 @@ export default function HomeScreen() {
     }
   }
 
-  function submitPlayer() {
+  async function submitPlayer() {
     const name = newName.trim();
-    if (name && !state.players.includes(name)) addPlayer(name);
+    if (!name || state.players.includes(name)) { setNewName(''); setAddingPlayer(false); return; }
+    addPlayer(name);
     setNewName('');
+    const uri = await promptAndPickAvatar(name);
+    if (uri) setAvatar(name, uri);
     setAddingPlayer(false);
   }
 
@@ -262,6 +266,7 @@ export default function HomeScreen() {
                     key={p}
                     name={p}
                     accentColor={ACCENT_COLORS[i % ACCENT_COLORS.length]}
+                    avatar={state.avatars?.[p]}
                     removable={state.players.length > 2}
                     onRemove={() => removePlayer(p)}
                   />
