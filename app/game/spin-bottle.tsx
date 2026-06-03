@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Circle, Ellipse, Path, Polygon } from 'react-native-svg';
+import Svg, { Circle, Ellipse, Path, Polygon, Rect, Text as SvgText } from 'react-native-svg';
 import FlipCard from '@/features/spin-bottle/FlipCard';
 import SpinWheel from '@/features/spin-bottle/SpinWheel';
 import { useSpinGame } from '@/features/spin-bottle/useSpinGame';
@@ -61,26 +61,32 @@ function MetaPill({ label }: { label: string }) {
 
 function BottleIllo() {
   return (
-    <Svg width={80} height={130} viewBox="0 0 60 105">
-      <Ellipse cx="30" cy="100" rx="14" ry="3.5" fill={COLORS.ink} opacity={0.15} />
+    <Svg width={80} height={136} viewBox="0 0 60 102">
+      {/* ground shadow */}
+      <Ellipse cx="30" cy="99" rx="16" ry="3" fill={COLORS.ink} opacity={0.15} />
+      {/* bottle body */}
       <Path
-        d="M22 28 L22 42 Q10 50 10 64 L10 88 Q10 96 18 96 L42 96 Q50 96 50 88 L50 64 Q50 50 38 42 L38 28 Z"
-        fill={COLORS.mint}
+        d="M22 24 L22 38 Q10 46 10 60 L10 86 Q10 94 18 94 L42 94 Q50 94 50 86 L50 60 Q50 46 38 38 L38 24 Z"
+        fill="#D92020"
         stroke={COLORS.ink}
         strokeWidth="3"
         strokeLinejoin="round"
       />
-      <Path d="M22 28 Q30 24 38 28" fill="none" stroke={COLORS.ink} strokeWidth="1.5" />
-      <Path
-        d="M22 6 L38 6 L36 2 L24 2 Z"
-        fill={COLORS.ink}
-        stroke={COLORS.ink}
-        strokeWidth="2"
-        strokeLinejoin="round"
-      />
+      {/* neck shoulder line */}
+      <Path d="M22 24 Q30 20 38 24" fill="none" stroke={COLORS.ink} strokeWidth="1.5" />
+      {/* neck / cap */}
+      <Rect x="22" y="8" width="16" height="18" rx="3" fill={COLORS.ink} />
       {/* label */}
-      <Path d="M14 62 L46 62 L46 82 L14 82 Z" fill={COLORS.cream} stroke={COLORS.ink} strokeWidth="1.5" />
-      <Polygon points="30,14 34,20 26,20" fill={COLORS.pink} stroke={COLORS.ink} strokeWidth="1.5" strokeLinejoin="round" />
+      <Rect x="13" y="57" width="34" height="24" rx="2" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="2" />
+      <SvgText x="30" y="69" textAnchor="middle" fontFamily="serif" fontWeight="900" fontSize="10" fill="#1A6B1A">
+        UFC
+      </SvgText>
+      <Path d="M17 72 L43 72" stroke="#1A6B1A" strokeWidth="1" />
+      <SvgText x="30" y="78" textAnchor="middle" fontFamily="serif" fontSize="4.5" fill="#1A6B1A">
+        KETCHUP
+      </SvgText>
+      {/* shine */}
+      <Path d="M14 46 Q13 60 14 84" stroke="rgba(255,255,255,0.65)" strokeWidth="3" fill="none" strokeLinecap="round" />
     </Svg>
   );
 }
@@ -138,7 +144,7 @@ export default function SpinBottleScreen() {
                 fontFamily: FONTS.display,
                 fontSize: 52,
                 color: COLORS.ink,
-                lineHeight: 52 * 0.9,
+                lineHeight: 56,
                 letterSpacing: -1.5,
               }}
             >
@@ -155,7 +161,7 @@ export default function SpinBottleScreen() {
                 maxWidth: 300,
               }}
             >
-              Tap to spin. Whoever it points to picks{' '}
+              Swipe to spin. Whoever it points to picks{' '}
               <Text style={{ fontFamily: FONTS.uiBold }}>Truth</Text> or{' '}
               <Text style={{ fontFamily: FONTS.uiBold }}>Dare</Text>. Pass the phone. Repeat until someone cries.
             </Text>
@@ -212,13 +218,18 @@ export default function SpinBottleScreen() {
           </View>
 
           {/* spin wheel */}
-          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 }}>
             <SpinWheel
               players={state.players}
               targetIndex={game.targetIndex}
               isSpinning={game.isSpinning}
               onSpin={game.spin}
             />
+            {!game.isSpinning && game.targetIndex === null && (
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 11, color: COLORS.ink2, letterSpacing: 1.2 }}>
+                SWIPE TO SPIN
+              </Text>
+            )}
           </View>
 
           {/* Truth/Dare CTA — only after spin lands */}
@@ -274,6 +285,7 @@ export default function SpinBottleScreen() {
                 color: COLORS.ink,
                 letterSpacing: -1,
                 lineHeight: 38,
+                marginTop: 8,
               }}
             >
               {game.targetIndex !== null ? state.players[game.targetIndex] : ''}

@@ -8,6 +8,17 @@ function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// velocity (px/s) → animation duration (ms) + extra spins
+function spinParamsFromVelocity(velocity: number): { duration: number; spins: number } {
+  const speed = Math.min(velocity, 3000);
+  const duration = Math.max(900, Math.round(3200 - speed * 0.77));
+  // tap (0) gets a random 5-7; swipes ramp up from 5 to 9
+  const spins = velocity === 0
+    ? randomInt(5, 7)
+    : 5 + Math.min(Math.floor(speed / 600), 4);
+  return { duration, spins };
+}
+
 export function useSpinGame(players: string[]) {
   const [phase, setPhase] = useState<SpinPhase>('intro');
   const [targetIndex, setTargetIndex] = useState<number | null>(null);
@@ -19,15 +30,17 @@ export function useSpinGame(players: string[]) {
   const truthIdx = useRef(0);
   const dareIdx = useRef(0);
 
-  function spin(onAngle: (finalAngle: number, spins: number) => void) {
+  function spin(
+    velocity: number,
+    onAngle: (finalAngle: number, duration: number) => void,
+  ) {
     if (isSpinning || players.length < 2) return;
     setIsSpinning(true);
     setPhase('spin');
 
+    const { duration, spins } = spinParamsFromVelocity(velocity);
     const idx = randomInt(0, players.length - 1);
-    const spins = randomInt(5, 7);
-    const playerCount = players.length;
-    const targetDeg = (idx / playerCount) * 360 - 90;
+    const targetDeg = (idx / players.length) * 360 - 90;
     const finalAngle =
       currentAngle.current -
       (currentAngle.current % 360) +
@@ -37,24 +50,20 @@ export function useSpinGame(players: string[]) {
 
     currentAngle.current = finalAngle;
     setTargetIndex(idx);
-    onAngle(finalAngle, spins);
+    onAngle(finalAngle, duration);
 
-    setTimeout(() => {
-      setIsSpinning(false);
-    }, 3400);
+    setTimeout(() => setIsSpinning(false), duration + 200);
   }
 
   function pickTruth() {
-    const pool = TRUTHS;
-    setPrompt(pool[truthIdx.current % pool.length]);
+    setPrompt(TRUTHS[truthIdx.current % TRUTHS.length]);
     truthIdx.current += 1;
     setPromptType('truth');
     setPhase('result');
   }
 
   function pickDare() {
-    const pool = DARES;
-    setPrompt(pool[dareIdx.current % pool.length]);
+    setPrompt(DARES[dareIdx.current % DARES.length]);
     dareIdx.current += 1;
     setPromptType('dare');
     setPhase('result');
@@ -67,9 +76,7 @@ export function useSpinGame(players: string[]) {
     ref.current += 1;
   }
 
-  function startGame() {
-    setPhase('spin');
-  }
+  function startGame() { setPhase('spin'); }
 
   function reset() {
     setPhase('spin');
@@ -85,19 +92,8 @@ export function useSpinGame(players: string[]) {
   }
 
   return {
-    phase,
-    targetIndex,
-    promptType,
-    prompt,
-    isSpinning,
-    round,
-    startGame,
-    spin,
-    pickTruth,
-    pickDare,
-    reroll,
-    reset,
-    resetToIntro,
+    phase, targetIndex, promptType, prompt, isSpinning, round,
+    startGame, spin, pickTruth, pickDare, reroll, reset, resetToIntro,
     players,
   };
 }

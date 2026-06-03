@@ -12,7 +12,7 @@ export type Game = {
 
 export const GAMES: Game[] = [
   { id: 'truth_dare',   name: 'Truth or Dare',       tag: '2–10', mins: 15, color: COLORS.pink,   cat: 'classic',  age: '18+' },
-  { id: 'spin_bottle',  name: 'Spin the Bottle',     tag: '3–12', mins: 10, color: COLORS.mint,   cat: 'classic',  age: '18+' },
+  { id: 'spin_bottle',  name: 'Spin the Bottle',     tag: '3–12', mins: 10, color: '#D92020',     cat: 'classic',  age: '18+' },
   { id: 'drawing',      name: 'Doodle Duel',         tag: '2–8',  mins: 20, color: COLORS.yellow, cat: 'creative', age: 'all' },
   { id: 'guess_word',   name: 'Guess the Word',      tag: '3–8',  mins: 15, color: COLORS.tomato, cat: 'word',     age: 'all' },
   { id: 'guess_movie',  name: 'Name That Movie',     tag: '3–10', mins: 15, color: COLORS.purple, cat: 'word',     age: 'all' },

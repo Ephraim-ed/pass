@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
 
 type Props = {
@@ -7,39 +7,37 @@ type Props = {
 };
 
 export default function SpeechBubble({ text }: Props) {
+  const bg = COLORS.cream;
+
   return (
-    <View>
+    <View style={{ alignSelf: 'flex-start', maxWidth: 220 }}>
+      {/* Bubble body */}
       <View
         style={{
-          backgroundColor: COLORS.card,
-          borderRadius: RADIUS.md,
+          backgroundColor: bg,
+          borderRadius: RADIUS.lg,
           borderWidth: 2.5,
           borderColor: COLORS.ink,
-          paddingHorizontal: 16,
+          paddingHorizontal: 14,
           paddingVertical: 10,
+          shadowColor: COLORS.ink,
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 1,
+          shadowRadius: 0,
         }}
       >
-        <Text style={{ fontFamily: FONTS.ui, fontSize: 15, color: COLORS.inkSoft }}>{text}</Text>
+        <Text
+          style={{
+            fontFamily: FONTS.uiBold,
+            fontSize: 13,
+            color: COLORS.ink,
+            lineHeight: 18,
+          }}
+        >
+          {text}
+        </Text>
       </View>
-      {/* Triangle tail */}
-      <View style={styles.tail} />
+
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  tail: {
-    position: 'absolute',
-    bottom: -12,
-    left: 24,
-    width: 16,
-    height: 12,
-    backgroundColor: COLORS.card,
-    borderLeftWidth: 2.5,
-    borderRightWidth: 2.5,
-    borderBottomWidth: 2.5,
-    borderColor: COLORS.ink,
-    transform: [{ rotate: '45deg' }],
-    borderRadius: 2,
-  },
-});

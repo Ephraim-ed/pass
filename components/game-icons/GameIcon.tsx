@@ -23,10 +23,25 @@ function TruthOrDareIcon({ color }: { color: string }) {
 function SpinBottleIcon({ color }: { color: string }) {
   return (
     <Svg viewBox="0 0 64 64" width="100%" height="100%">
-      <Circle cx="32" cy="32" r="20" fill="none" stroke={COLORS.ink} strokeWidth="2.5" strokeDasharray="4 3" />
-      <Ellipse cx="32" cy="32" rx="5" ry="5" fill={color} stroke={COLORS.ink} strokeWidth="2" />
-      <Line x1="32" y1="16" x2="32" y2="27" stroke={COLORS.ink} strokeWidth="3" strokeLinecap="round" />
-      <Polygon points="32,12 29,18 35,18" fill={COLORS.ink} />
+      {/* ground shadow */}
+      <Ellipse cx="32" cy="60" rx="10" ry="2.5" fill={COLORS.ink} opacity={0.15} />
+      {/* bottle body */}
+      <Path
+        d="M28 22 Q23 26 23 33 L23 54 Q23 59 28 59 L36 59 Q41 59 41 54 L41 33 Q41 26 36 22 Z"
+        fill={color}
+        stroke={COLORS.ink}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      {/* cap / neck */}
+      <Rect x="28" y="9" width="8" height="14" rx="2" fill={COLORS.ink} />
+      {/* label */}
+      <Rect x="24" y="33" width="16" height="13" rx="1.5" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="1.5" />
+      <SvgText x="32" y="42" textAnchor="middle" fontFamily="serif" fontWeight="900" fontSize="7" fill="#1A6B1A">
+        UFC
+      </SvgText>
+      {/* shine */}
+      <Path d="M25 28 Q24 38 25 52" stroke="rgba(255,255,255,0.5)" strokeWidth="2" fill="none" strokeLinecap="round" />
     </Svg>
   );
 }

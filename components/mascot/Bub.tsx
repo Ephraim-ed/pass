@@ -94,9 +94,18 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
     ],
   }));
 
-  const armStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${armRot.value}deg` }],
-  }));
+  // Rotate around the right shoulder (SVG x=82, y=60 in 120×120 viewBox).
+  // RN rotates around the view center (60,60), so we shift pivot via translate-rotate-translate.
+  const armStyle = useAnimatedStyle(() => {
+    const pivotX = (22 / 120) * size; // shoulder is 22 units right of center
+    return {
+      transform: [
+        { translateX: pivotX },
+        { rotate: `${armRot.value}deg` },
+        { translateX: -pivotX },
+      ],
+    };
+  });
 
   const hatStyle = useAnimatedStyle(() => ({
     transform: [{ rotate: `${hatRot.value}deg` }],
@@ -193,11 +202,12 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
           ]}
         >
           <Svg viewBox="0 0 120 120" width="100%" height="100%">
-            <G transform="translate(60,22)">
-              <Path d="M0 0 L-16 -36 L16 -36 Z" fill={hat} stroke={COLORS.ink} strokeWidth="2" />
-              <Path d="M-14 -30 L14 -30 L12 -24 L-12 -24 Z" fill={COLORS.cream} opacity={0.6} />
-              <Circle cx="0" cy="-38" r="5" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="1.5" />
-            </G>
+            {/* Hat: tip at top (y≈0), base sitting on head (y≈24) */}
+            <Path d="M44 24 L60 1 L76 24 Z" fill={hat} stroke={COLORS.ink} strokeWidth="2" strokeLinejoin="round" />
+            {/* Stripe */}
+            <Path d="M49 18 L71 18" stroke={COLORS.cream} strokeWidth="2" strokeLinecap="round" opacity={0.7} />
+            {/* Pompom */}
+            <Circle cx="60" cy="1" r="4.5" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="1.5" />
           </Svg>
         </Animated.View>
       </Animated.View>
