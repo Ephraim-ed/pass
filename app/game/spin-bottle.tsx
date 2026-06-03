@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Svg, { Ellipse, Path } from 'react-native-svg';
+import Svg, { Circle, Ellipse, Path, Polygon } from 'react-native-svg';
 import FlipCard from '@/features/spin-bottle/FlipCard';
 import SpinWheel from '@/features/spin-bottle/SpinWheel';
 import { useSpinGame } from '@/features/spin-bottle/useSpinGame';
@@ -12,6 +12,34 @@ import StickerButton from '@/components/ui/StickerButton';
 import { useApp } from '@/store/useApp';
 import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
 
+// ── Shared primitives ─────────────────────────────────────────
+
+function BackButton({ onPress }: { onPress: () => void }) {
+  return (
+    <Pressable
+      onPress={onPress}
+      style={{
+        width: 44,
+        height: 44,
+        borderRadius: 999,
+        backgroundColor: COLORS.cream,
+        borderWidth: 2.5,
+        borderColor: COLORS.ink,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: COLORS.ink,
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 1,
+        shadowRadius: 0,
+      }}
+    >
+      <Svg width={16} height={14} viewBox="0 0 16 14" fill="none">
+        <Path d="M15 7 H1 M7 1 L1 7 L7 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      </Svg>
+    </Pressable>
+  );
+}
+
 function MetaPill({ label }: { label: string }) {
   return (
     <View
@@ -21,7 +49,6 @@ function MetaPill({ label }: { label: string }) {
         borderRadius: RADIUS.pill,
         paddingHorizontal: 14,
         paddingVertical: 6,
-        marginRight: 8,
         backgroundColor: COLORS.cream2,
       }}
     >
@@ -32,6 +59,49 @@ function MetaPill({ label }: { label: string }) {
   );
 }
 
+function BottleIllo() {
+  return (
+    <Svg width={80} height={130} viewBox="0 0 60 105">
+      <Ellipse cx="30" cy="100" rx="14" ry="3.5" fill={COLORS.ink} opacity={0.15} />
+      <Path
+        d="M22 28 L22 42 Q10 50 10 64 L10 88 Q10 96 18 96 L42 96 Q50 96 50 88 L50 64 Q50 50 38 42 L38 28 Z"
+        fill={COLORS.mint}
+        stroke={COLORS.ink}
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
+      <Path d="M22 28 Q30 24 38 28" fill="none" stroke={COLORS.ink} strokeWidth="1.5" />
+      <Path
+        d="M22 6 L38 6 L36 2 L24 2 Z"
+        fill={COLORS.ink}
+        stroke={COLORS.ink}
+        strokeWidth="2"
+        strokeLinejoin="round"
+      />
+      {/* label */}
+      <Path d="M14 62 L46 62 L46 82 L14 82 Z" fill={COLORS.cream} stroke={COLORS.ink} strokeWidth="1.5" />
+      <Polygon points="30,14 34,20 26,20" fill={COLORS.pink} stroke={COLORS.ink} strokeWidth="1.5" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+function Burst({ size = 80, color = COLORS.yellow }: { size?: number; color?: string }) {
+  const n = 12;
+  const pts: string[] = [];
+  for (let i = 0; i < n * 2; i++) {
+    const r = i % 2 === 0 ? 48 : 32;
+    const a = (i / (n * 2)) * Math.PI * 2 - Math.PI / 2;
+    pts.push(`${50 + Math.cos(a) * r},${50 + Math.sin(a) * r}`);
+  }
+  return (
+    <Svg width={size} height={size} viewBox="0 0 100 100">
+      <Polygon points={pts.join(' ')} fill={color} stroke={COLORS.ink} strokeWidth="3" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+// ── Main screen ───────────────────────────────────────────────
+
 export default function SpinBottleScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -40,194 +110,233 @@ export default function SpinBottleScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.cream2 }}>
-      {/* Back button */}
-      <Pressable
-        onPress={() => router.back()}
-        style={{ position: 'absolute', top: insets.top + 12, left: 16, zIndex: 10, padding: 8 }}
-      >
-        <Text style={{ fontFamily: FONTS.uiBold, fontSize: 16, color: COLORS.ink }}>← Back</Text>
-      </Pressable>
 
-      <ScrollView
-        contentContainerStyle={{ paddingTop: insets.top + 56, paddingBottom: 48 }}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* INTRO PHASE */}
-        {game.phase === 'intro' && (
-          <View style={{ paddingHorizontal: 20, alignItems: 'center' }}>
+      {/* ── INTRO PHASE ── */}
+      {game.phase === 'intro' && (
+        <View style={{ flex: 1, padding: 22, paddingTop: insets.top + 16 }}>
+          <BackButton onPress={() => router.back()} />
+
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            {/* badge */}
+            <View
+              style={{
+                alignSelf: 'flex-start',
+                backgroundColor: COLORS.ink,
+                borderRadius: RADIUS.pill,
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                marginBottom: 14,
+              }}
+            >
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.cream, letterSpacing: 1.4 }}>
+                CLASSIC · 18+
+              </Text>
+            </View>
+
             <Text
               style={{
                 fontFamily: FONTS.display,
-                fontSize: 42,
+                fontSize: 52,
                 color: COLORS.ink,
-                lineHeight: 42 * 0.98,
-                letterSpacing: -1,
-                textAlign: 'center',
-                marginBottom: 16,
+                lineHeight: 52 * 0.9,
+                letterSpacing: -1.5,
               }}
             >
-              Spin the Bottle
+              {"Spin the\nBottle."}
             </Text>
 
-            {/* Bottle illustration */}
-            <View style={{ marginVertical: 24 }}>
-              <Svg width={120} height={160} viewBox="0 0 60 80">
-                <Ellipse cx="30" cy="72" rx="12" ry="5" fill={COLORS.ink} opacity={0.15} />
-                <Path d="M22 28 Q18 18 20 8 L40 8 Q42 18 38 28 Q42 32 42 50 Q42 65 30 65 Q18 65 18 50 Q18 32 22 28 Z"
-                  fill={COLORS.mint} stroke={COLORS.ink} strokeWidth="2.5" />
-                <Path d="M22 28 Q30 24 38 28" fill="none" stroke={COLORS.ink} strokeWidth="1.5" />
-                <Path d="M25 8 L35 8 L34 4 L26 4 Z" fill={COLORS.ink2} stroke={COLORS.ink} strokeWidth="1.5" />
-              </Svg>
+            <Text
+              style={{
+                fontFamily: FONTS.ui,
+                fontSize: 16,
+                color: COLORS.inkSoft,
+                lineHeight: 24,
+                marginTop: 14,
+                maxWidth: 300,
+              }}
+            >
+              Tap to spin. Whoever it points to picks{' '}
+              <Text style={{ fontFamily: FONTS.uiBold }}>Truth</Text> or{' '}
+              <Text style={{ fontFamily: FONTS.uiBold }}>Dare</Text>. Pass the phone. Repeat until someone cries.
+            </Text>
+
+            {/* bottle illustration */}
+            <View style={{ alignItems: 'flex-start', marginTop: 28, height: 150, position: 'relative' }}>
+              <View style={{ marginLeft: 40 }}>
+                <BottleIllo />
+              </View>
+              <View style={{ position: 'absolute', top: 10, right: 40 }}>
+                <Burst size={40} color={COLORS.yellow} />
+              </View>
+              <View style={{ position: 'absolute', bottom: 16, left: 46 }}>
+                <Burst size={28} color={COLORS.pink} />
+              </View>
             </View>
 
-            {/* Rules */}
-            <View style={{ flexDirection: 'row', marginBottom: 24 }}>
+            {/* meta pills */}
+            <View style={{ flexDirection: 'row', gap: 8, marginTop: 24, flexWrap: 'wrap' }}>
               <MetaPill label={`${state.players.length} players`} />
               <MetaPill label="~10 min" />
-              <MetaPill label="🔊 Loud" />
+              <MetaPill label="Loud" />
             </View>
+          </View>
 
-            <Sticker color={COLORS.cream} radius={RADIUS.xl} shadowY={3} style={{ width: '100%', marginBottom: 32 }}>
-              <View style={{ padding: 16 }}>
-                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 14, color: COLORS.inkSoft, lineHeight: 22 }}>
-                  The bottle spins and picks a player. That player chooses Truth or Dare. Complete the challenge, then spin again!
-                </Text>
-              </View>
-            </Sticker>
-
-            <StickerButton
-              color={COLORS.mint}
-              radius={RADIUS.pill}
-              onPress={game.startGame}
-              style={{ width: '100%' }}
-            >
-              <Text
-                style={{
-                  fontFamily: FONTS.uiBold,
-                  fontSize: 18,
-                  color: COLORS.ink,
-                  textAlign: 'center',
-                  paddingVertical: 18,
-                }}
-              >
+          <StickerButton color={COLORS.pink} radius={RADIUS.pill} shadowY={5} onPress={game.startGame}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, paddingVertical: 20 }}>
+              <Text style={{ fontFamily: FONTS.uiBold, fontSize: 18, color: COLORS.ink }}>
                 Start spinning
               </Text>
-            </StickerButton>
+              <Svg width={18} height={14} viewBox="0 0 18 14" fill="none">
+                <Path d="M1 7 H16 M10 1 L16 7 L10 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              </Svg>
+            </View>
+          </StickerButton>
+        </View>
+      )}
+
+      {/* ── SPIN PHASE ── */}
+      {game.phase === 'spin' && (
+        <View style={{ flex: 1, paddingTop: insets.top + 16, paddingBottom: 40 }}>
+          {/* top nav */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 22 }}>
+            <BackButton onPress={() => game.resetToIntro()} />
+            <View style={{ alignItems: 'center' }}>
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 9, color: COLORS.ink2, letterSpacing: 1.4 }}>
+                ROUND {game.round}
+              </Text>
+              <Text style={{ fontFamily: FONTS.display, fontSize: 18, color: COLORS.ink, letterSpacing: -0.4 }}>
+                Spin the Bottle
+              </Text>
+            </View>
+            <View style={{ width: 44 }} />
           </View>
-        )}
 
-        {/* SPIN PHASE */}
-        {game.phase === 'spin' && (
-          <View style={{ alignItems: 'center', paddingHorizontal: 20 }}>
-            <Text
-              style={{
-                fontFamily: FONTS.display,
-                fontSize: 34,
-                color: COLORS.ink,
-                marginBottom: 24,
-                textAlign: 'center',
-              }}
-            >
-              {game.isSpinning
-                ? 'Spinning...'
-                : game.targetIndex !== null
-                ? `${state.players[game.targetIndex]} — pick your fate!`
-                : 'Tap Spin!'}
-            </Text>
-
+          {/* spin wheel */}
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <SpinWheel
               players={state.players}
               targetIndex={game.targetIndex}
               isSpinning={game.isSpinning}
               onSpin={game.spin}
             />
+          </View>
 
-            {!game.isSpinning && game.targetIndex !== null && (
-              <View style={{ flexDirection: 'row', gap: 12, marginTop: 32 }}>
-                <StickerButton
-                  color={COLORS.purple}
-                  radius={RADIUS.xl}
-                  onPress={game.pickTruth}
-                  style={{ flex: 1 }}
-                >
-                  <Text style={{ fontFamily: FONTS.uiBold, fontSize: 18, color: COLORS.cream, textAlign: 'center', paddingVertical: 16 }}>
-                    Truth
-                  </Text>
+          {/* Truth/Dare CTA — only after spin lands */}
+          {!game.isSpinning && game.targetIndex !== null && (
+            <View style={{ paddingHorizontal: 22, alignItems: 'center', gap: 10 }}>
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink2, letterSpacing: 1.4 }}>
+                POINTING AT
+              </Text>
+              <Text style={{ fontFamily: FONTS.display, fontSize: 30, color: COLORS.ink, letterSpacing: -0.7 }}>
+                {state.players[game.targetIndex]}
+              </Text>
+              <View style={{ flexDirection: 'row', gap: 12, width: '100%' }}>
+                <StickerButton color={COLORS.purple} radius={RADIUS.xl} onPress={game.pickTruth} style={{ flex: 1 }}>
+                  <View style={{ padding: 18, alignItems: 'center' }}>
+                    <Text style={{ fontFamily: FONTS.display, fontSize: 22, color: COLORS.cream, letterSpacing: -0.5 }}>
+                      TRUTH
+                    </Text>
+                    <Text style={{ fontFamily: FONTS.mono, fontSize: 9, color: COLORS.cream, opacity: 0.8, letterSpacing: 1, marginTop: 2 }}>
+                      tell all
+                    </Text>
+                  </View>
                 </StickerButton>
-                <StickerButton
-                  color={COLORS.tomato}
-                  radius={RADIUS.xl}
-                  onPress={game.pickDare}
-                  style={{ flex: 1 }}
-                >
-                  <Text style={{ fontFamily: FONTS.uiBold, fontSize: 18, color: COLORS.ink, textAlign: 'center', paddingVertical: 16 }}>
-                    Dare
-                  </Text>
+                <StickerButton color={COLORS.tomato} radius={RADIUS.xl} onPress={game.pickDare} style={{ flex: 1 }}>
+                  <View style={{ padding: 18, alignItems: 'center' }}>
+                    <Text style={{ fontFamily: FONTS.display, fontSize: 22, color: COLORS.cream, letterSpacing: -0.5 }}>
+                      DARE
+                    </Text>
+                    <Text style={{ fontFamily: FONTS.mono, fontSize: 9, color: COLORS.cream, opacity: 0.8, letterSpacing: 1, marginTop: 2 }}>
+                      do it
+                    </Text>
+                  </View>
                 </StickerButton>
               </View>
-            )}
-          </View>
-        )}
+            </View>
+          )}
+        </View>
+      )}
 
-        {/* RESULT PHASE */}
-        {game.phase === 'result' && (
-          <View style={{ paddingHorizontal: 20, alignItems: 'center' }}>
+      {/* ── RESULT PHASE ── */}
+      {game.phase === 'result' && (
+        <View style={{ flex: 1, paddingTop: insets.top + 16, paddingHorizontal: 22, paddingBottom: 40 }}>
+          <BackButton onPress={() => game.resetToIntro()} />
+
+          {/* player name + Bub */}
+          <View style={{ alignItems: 'center', marginTop: 16 }}>
+            <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink2, letterSpacing: 1.4 }}>
+              BOTTLE PICKED
+            </Text>
             <Text
               style={{
                 fontFamily: FONTS.display,
-                fontSize: 34,
+                fontSize: 38,
                 color: COLORS.ink,
-                textAlign: 'center',
-                marginBottom: 8,
+                letterSpacing: -1,
+                lineHeight: 38,
               }}
             >
               {game.targetIndex !== null ? state.players[game.targetIndex] : ''}
             </Text>
-            <Text style={{ fontFamily: FONTS.mono, fontSize: 11, color: COLORS.ink2, letterSpacing: 1, marginBottom: 24 }}>
-              {game.promptType === 'truth' ? 'CHOSE TRUTH' : 'CHOSE DARE'}
-            </Text>
 
-            {/* Bub with speech bubble */}
-            <View style={{ flexDirection: 'row', alignItems: 'flex-end', marginBottom: 24 }}>
-              <Bub pose="mic" size={90} color={COLORS.mint} hat={COLORS.tomato} />
-              <View style={{ flex: 1, marginLeft: 8, marginBottom: 20 }}>
-                <SpeechBubble text={game.promptType === 'truth' ? "Time to spill the tea! 🍵" : "Let's see what you've got! 😈"} />
+            {/* Bub commentating */}
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 8, marginTop: 12 }}>
+              <View style={{ transform: [{ translateY: 6 }] }}>
+                <Bub pose="mic" size={70} color={COLORS.mint} hat={COLORS.tomato} />
+              </View>
+              <View style={{ marginBottom: 14 }}>
+                <SpeechBubble
+                  text={
+                    game.promptType === 'truth'
+                      ? "Ooooh — no escape!"
+                      : "Let's see what you've got!"
+                  }
+                />
               </View>
             </View>
+          </View>
 
-            {/* Flip card */}
+          {/* flip card */}
+          <View style={{ flex: 1, justifyContent: 'center' }}>
             <FlipCard prompt={game.prompt} type={game.promptType} />
+          </View>
 
-            {/* Action buttons */}
-            <View style={{ flexDirection: 'row', gap: 12, marginTop: 28, width: '100%' }}>
-              <Pressable
-                onPress={game.reroll}
-                style={{
-                  flex: 1,
-                  paddingVertical: 14,
-                  borderRadius: RADIUS.pill,
-                  borderWidth: 2.5,
-                  borderColor: COLORS.ink,
-                  backgroundColor: COLORS.cream,
-                  alignItems: 'center',
-                }}
-              >
-                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink }}>Reroll</Text>
-              </Pressable>
-              <StickerButton
-                color={COLORS.mint}
-                radius={RADIUS.pill}
-                onPress={game.reset}
-                style={{ flex: 1 }}
-              >
-                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink, textAlign: 'center', paddingVertical: 14 }}>
+          {/* action buttons */}
+          <View style={{ flexDirection: 'row', gap: 12 }}>
+            <Pressable
+              onPress={game.reroll}
+              style={{
+                flex: 1,
+                paddingVertical: 14,
+                borderRadius: RADIUS.pill,
+                borderWidth: 2.5,
+                borderColor: COLORS.ink,
+                backgroundColor: COLORS.cream,
+                alignItems: 'center',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 6,
+              }}
+            >
+              <Svg width={14} height={14} viewBox="0 0 14 14" fill="none">
+                <Path d="M11 7 Q11 11 7 11 Q3 11 3 7 Q3 3 7 3 Q9.5 3 11 5" stroke={COLORS.ink} strokeWidth="2" strokeLinecap="round" fill="none" />
+                <Path d="M9 1 L11 5 L7 5" stroke={COLORS.ink} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+              </Svg>
+              <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink }}>Reroll</Text>
+            </Pressable>
+            <StickerButton color={COLORS.pink} radius={RADIUS.pill} onPress={game.reset} style={{ flex: 1.4 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, paddingVertical: 14 }}>
+                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink }}>
                   Spin again
                 </Text>
-              </StickerButton>
-            </View>
+                <Svg width={14} height={12} viewBox="0 0 18 14" fill="none">
+                  <Path d="M1 7 H16 M10 1 L16 7 L10 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </Svg>
+              </View>
+            </StickerButton>
           </View>
-        )}
-      </ScrollView>
+        </View>
+      )}
     </View>
   );
 }

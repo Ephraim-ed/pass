@@ -14,6 +14,7 @@ export function useSpinGame(players: string[]) {
   const [promptType, setPromptType] = useState<PromptType>('truth');
   const [prompt, setPrompt] = useState('');
   const [isSpinning, setIsSpinning] = useState(false);
+  const [round, setRound] = useState(1);
   const currentAngle = useRef(0);
   const truthIdx = useRef(0);
   const dareIdx = useRef(0);
@@ -73,6 +74,14 @@ export function useSpinGame(players: string[]) {
   function reset() {
     setPhase('spin');
     setTargetIndex(null);
+    setRound((r) => r + 1);
+  }
+
+  function resetToIntro() {
+    setPhase('intro');
+    setTargetIndex(null);
+    setRound(1);
+    currentAngle.current = 0;
   }
 
   return {
@@ -81,12 +90,14 @@ export function useSpinGame(players: string[]) {
     promptType,
     prompt,
     isSpinning,
+    round,
     startGame,
     spin,
     pickTruth,
     pickDare,
     reroll,
     reset,
+    resetToIntro,
     players,
   };
 }
