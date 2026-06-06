@@ -13,12 +13,12 @@
 //
 // Avatars: shows player photo if available, otherwise initial letter.
 
-import { useMemo } from 'react';
-import { Image, Pressable, Text, View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import StickerButton from '@/components/ui/StickerButton';
-import type { PlayerAssignment } from '@/features/secret-number/types';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { useMemo } from "react";
+import { Image, Pressable, Text, View, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import StickerButton from "@/components/ui/StickerButton";
+import type { PlayerAssignment } from "@/features/secret-number/types";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
 
 interface ResultPlayerRowProps {
   position: number;
@@ -35,8 +35,18 @@ interface ResultPlayerRowProps {
 function EyeIcon() {
   return (
     <Svg width={16} height={12} viewBox="0 0 16 12" fill="none">
-      <Path d="M1 6 Q4 1 8 1 Q12 1 15 6 Q12 11 8 11 Q4 11 1 6 Z" stroke={COLORS.ink} strokeWidth="2" fill="none" />
-      <Path d="M6 6 A2 2 0 1 0 10 6 A2 2 0 1 0 6 6" stroke={COLORS.ink} strokeWidth="2" fill="none" />
+      <Path
+        d="M1 6 Q4 1 8 1 Q12 1 15 6 Q12 11 8 11 Q4 11 1 6 Z"
+        stroke={"white"}
+        strokeWidth="2"
+        fill="none"
+      />
+      <Path
+        d="M6 6 A2 2 0 1 0 10 6 A2 2 0 1 0 6 6"
+        stroke={"white"}
+        strokeWidth="2"
+        fill="none"
+      />
     </Svg>
   );
 }
@@ -56,24 +66,25 @@ export default function ResultPlayerRow({
 
   const messages = useMemo(() => {
     const correctMessages = [
-      'Nailed it.',
-      'Right on the money.',
-      'Spot on.',
-      'Exactly where they belong.',
-      'Perfect call.',
-      'Dead on.',
-      'Couldn\'t have placed it better.',
+      "Nailed it.",
+      "Right on the money.",
+      "Spot on.",
+      "Exactly where they belong.",
+      "Perfect call.",
+      "Dead on.",
+      "Couldn't have placed it better.",
     ];
     const wrongMessages = [
-      'Not quite.',
-      'Close, but not here.',
-      'Wrong spot.',
-      'Misplaced.',
-      'Should\'ve been elsewhere.',
-      'Off the mark.',
-      'This one slipped.',
+      "Not quite.",
+      "Close, but not here.",
+      "Wrong spot.",
+      "Misplaced.",
+      "Should've been elsewhere.",
+      "Off the mark.",
+      "This one slipped.",
     ];
-    const pick = (pool: string[]) => pool[Math.floor(Math.random() * pool.length)];
+    const pick = (pool: string[]) =>
+      pool[Math.floor(Math.random() * pool.length)];
     return {
       correct: pick(correctMessages),
       wrong: pick(wrongMessages),
@@ -97,9 +108,15 @@ export default function ResultPlayerRow({
         {/* Your pick: avatar + name */}
         <View style={styles.avatar}>
           {avatarUri ? (
-            <Image source={{ uri: avatarUri }} style={styles.avatarImg} resizeMode="cover" />
+            <Image
+              source={{ uri: avatarUri }}
+              style={styles.avatarImg}
+              resizeMode="cover"
+            />
           ) : (
-            <Text style={styles.initial}>{submitted.name.charAt(0).toUpperCase()}</Text>
+            <Text style={styles.initial}>
+              {submitted.name.charAt(0).toUpperCase()}
+            </Text>
           )}
         </View>
         <Text style={styles.name} numberOfLines={1}>
@@ -117,13 +134,23 @@ export default function ResultPlayerRow({
 
         {/* Reveal button or result text */}
         {isRevealed ? (
-          <View style={[styles.resultBadge, isCorrect ? styles.badgeCorrect : styles.badgeWrong]}>
+          <View
+            style={[
+              styles.resultBadge,
+              isCorrect ? styles.badgeCorrect : styles.badgeWrong,
+            ]}
+          >
             <Text style={styles.resultText}>
-              {isCorrect ? 'Correct' : 'Wrong'}
+              {isCorrect ? "Correct" : "Wrong"}
             </Text>
           </View>
         ) : (
-          <StickerButton color={COLORS.ink} radius={14} shadowY={3} onPress={onReveal}>
+          <StickerButton
+            color={COLORS.ink}
+            radius={14}
+            shadowY={3}
+            onPress={onReveal}
+          >
             <View style={styles.revealBtn}>
               <EyeIcon />
               <Text style={styles.revealBtnText}>Reveal</Text>
@@ -146,9 +173,15 @@ export default function ResultPlayerRow({
                 <Text style={styles.answerLabel}>Should be:</Text>
                 <View style={styles.answerAvatar}>
                   {correctAvatarUri ? (
-                    <Image source={{ uri: correctAvatarUri }} style={styles.answerAvatarImg} resizeMode="cover" />
+                    <Image
+                      source={{ uri: correctAvatarUri }}
+                      style={styles.answerAvatarImg}
+                      resizeMode="cover"
+                    />
                   ) : (
-                    <Text style={styles.answerInitial}>{correct.name.charAt(0).toUpperCase()}</Text>
+                    <Text style={styles.answerInitial}>
+                      {correct.name.charAt(0).toUpperCase()}
+                    </Text>
                   )}
                 </View>
                 <Text style={styles.answerName}>{correct.name}</Text>
@@ -161,7 +194,9 @@ export default function ResultPlayerRow({
 
       {/* ── Unrevealed hint (subtle) ── */}
       {!isRevealed && (
-        <Text style={styles.hint}>Tap reveal to see if this is the right spot.</Text>
+        <Text style={styles.hint}>
+          Tap reveal to see if this is the right spot.
+        </Text>
       )}
     </View>
   );
@@ -187,8 +222,8 @@ const styles = StyleSheet.create({
 
   // -- Top row --
   topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 10,
   },
   posBadge: {
@@ -196,8 +231,8 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
     backgroundColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   posText: {
     fontFamily: FONTS.display,
@@ -209,9 +244,9 @@ const styles = StyleSheet.create({
     height: 38,
     borderRadius: 19,
     backgroundColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   avatarImg: {
     width: 38,
@@ -242,11 +277,11 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.mono,
     fontSize: 15,
     color: COLORS.ink,
-    fontWeight: '700',
+    fontWeight: "700",
   },
   revealBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 6,
     paddingHorizontal: 14,
     paddingVertical: 9,
@@ -287,8 +322,8 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   answerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   answerLabel: {
@@ -308,9 +343,9 @@ const styles = StyleSheet.create({
     height: 30,
     borderRadius: 15,
     backgroundColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
     marginLeft: 4,
   },
   answerAvatarImg: {
@@ -333,8 +368,8 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.mono,
     fontSize: 14,
     color: COLORS.ink,
-    fontWeight: '700',
-    marginLeft: 'auto',
+    fontWeight: "700",
+    marginLeft: "auto",
   },
 
   // -- Unrevealed hint --
