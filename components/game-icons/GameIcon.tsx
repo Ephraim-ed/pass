@@ -160,6 +160,18 @@ function WouldRatherIcon({ color }: { color: string }) {
   );
 }
 
+function SecretNumberIcon({ color }: { color: string }) {
+  return (
+    <Svg viewBox="0 0 64 64" width="100%" height="100%">
+      <Rect x="10" y="14" width="44" height="40" rx="6" fill={color} stroke={COLORS.ink} strokeWidth="2.5" />
+      <Circle cx="32" cy="32" r="12" fill={COLORS.ink} opacity={0.12} />
+      <SvgText x="32" y="37" textAnchor="middle" fontFamily="serif" fontSize="18" fontWeight="bold" fill={COLORS.ink}>#?</SvgText>
+      <Circle cx="32" cy="21" r="4" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="1.8" />
+      <Rect x="30.5" y="23" width="3" height="8" rx="1.5" fill={COLORS.ink} />
+    </Svg>
+  );
+}
+
 const ICONS: Record<string, React.FC<{ color: string }>> = {
   truth_dare: TruthOrDareIcon,
   spin_bottle: SpinBottleIcon,
@@ -172,6 +184,7 @@ const ICONS: Record<string, React.FC<{ color: string }>> = {
   most_likely: MostLikelyIcon,
   charades: CharadesIcon,
   would_rather: WouldRatherIcon,
+  secret_number: SecretNumberIcon,
 };
 
 export default function GameIcon({ gameId, size = 48, color = COLORS.cream }: Props) {
