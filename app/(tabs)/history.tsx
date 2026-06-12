@@ -1,22 +1,29 @@
-import { View, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TabBar from '@/components/ui/TabBar';
-import Bub from '@/components/mascot/Bub';
-import { COLORS, FONTS } from '@/theme/tokens';
+import { View, Text } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TabBar from "@/components/ui/TabBar";
+import Bub from "@/components/mascot/Bub";
+import { COLORS, FONTS } from "@/theme/tokens";
 
 export default function HistoryScreen() {
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ flex: 1, backgroundColor: COLORS.cream, alignItems: 'center', justifyContent: 'center' }}>
-      <Bub pose="idle" size={120} color={COLORS.sky} hat={COLORS.yellow} />
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: COLORS.cream,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <Bub pose="idle" size={120} color={COLORS.sky} />
       <Text
         style={{
           fontFamily: FONTS.display,
           fontSize: 28,
           color: COLORS.ink,
           marginTop: 24,
-          textAlign: 'center',
+          textAlign: "center",
         }}
       >
         No games yet.
@@ -27,7 +34,7 @@ export default function HistoryScreen() {
           fontSize: 15,
           color: COLORS.ink2,
           marginTop: 8,
-          textAlign: 'center',
+          textAlign: "center",
           paddingHorizontal: 40,
         }}
       >

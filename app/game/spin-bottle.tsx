@@ -530,12 +530,7 @@ export default function SpinBottleScreen() {
               }}
             >
               <View style={{ transform: [{ translateY: 6 }] }}>
-                <Bub
-                  pose="mic"
-                  size={70}
-                  color={COLORS.mint}
-                  hat={COLORS.tomato}
-                />
+                <Bub pose="mic" size={70} color={COLORS.mint} />
               </View>
               <View style={{ marginBottom: 14 }}>
                 <SpeechBubble

@@ -11,16 +11,16 @@
 // Scoring: "X out of Y in the right spot!" — positive-only, no negativity.
 // "Reveal All" for the impatient. Auto-shows EndGameModal after all revealed.
 
-import { useState, useCallback, useEffect } from 'react';
-import { Pressable, ScrollView, Text, View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import Bub from '@/components/mascot/Bub';
-import Sticker from '@/components/ui/Sticker';
-import ResultPlayerRow from './_result-row';
-import ConfirmModal from '@/components/shared/ConfirmModal';
-import EndGameModal from '@/components/shared/EndGameModal';
-import type { PlayerAssignment } from '@/features/secret-number/types';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { useState, useCallback, useEffect } from "react";
+import { Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import Bub from "@/components/mascot/Bub";
+import Sticker from "@/components/ui/Sticker";
+import ResultPlayerRow from "./_result-row";
+import ConfirmModal from "@/components/shared/ConfirmModal";
+import EndGameModal from "@/components/shared/EndGameModal";
+import type { PlayerAssignment } from "@/features/secret-number/types";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
 
 // -- Back button --------------------------------------------------
 
@@ -28,7 +28,13 @@ function BackButton({ onPress }: { onPress: () => void }) {
   return (
     <Pressable style={styles.backBtn} onPress={onPress}>
       <Svg width={16} height={14} viewBox="0 0 16 14" fill="none">
-        <Path d="M15 7 H1 M7 1 L1 7 L7 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path
+          d="M15 7 H1 M7 1 L1 7 L7 13"
+          stroke={COLORS.ink}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </Svg>
     </Pressable>
   );
@@ -98,13 +104,13 @@ export default function PhaseResults({
           <Text style={styles.heading}>Results</Text>
           <Text style={styles.subheading}>
             {allRevealed
-              ? 'All revealed!'
+              ? "All revealed!"
               : someRevealed
                 ? `${revealed.size} of ${totalPlayers} revealed`
-                : 'Tap Reveal to uncover each position.'}
+                : "Tap Reveal to uncover each position."}
           </Text>
         </View>
-        <Bub pose="cheer" size={56} color={COLORS.yellow} hat={COLORS.mint} />
+        <Bub pose="cheer" size={56} color={COLORS.yellow} />
       </View>
 
       <ScrollView
@@ -133,7 +139,7 @@ export default function PhaseResults({
           <View style={styles.revealAllWrap}>
             <Pressable onPress={handleRevealAll} style={styles.revealAllBtn}>
               <Text style={styles.revealAllText}>
-                {someRevealed ? 'Reveal Remaining' : 'Reveal All'}
+                {someRevealed ? "Reveal Remaining" : "Reveal All"}
               </Text>
             </Pressable>
           </View>
@@ -196,8 +202,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 22,
     paddingTop: 16,
     paddingBottom: 8,
@@ -209,8 +215,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     borderWidth: 2.5,
     borderColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: COLORS.ink,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
@@ -236,7 +242,7 @@ const styles = StyleSheet.create({
   // -- Score card --
   scoreCard: {
     padding: 20,
-    alignItems: 'center',
+    alignItems: "center",
     gap: 4,
   },
   scoreLabel: {
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
 
   // -- Reveal All --
   revealAllWrap: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
     marginBottom: 8,
   },

@@ -10,15 +10,15 @@
 // "Finalize" shows a confirmation modal with the proposed order.
 // Confirming locks the order and transitions to Phase 5 (results).
 
-import { useState, useCallback } from 'react';
-import { Pressable, ScrollView, Text, View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import Bub from '@/components/mascot/Bub';
-import StickerButton from '@/components/ui/StickerButton';
-import SortablePlayerList from './_sortable-list';
-import ConfirmModal from '@/components/shared/ConfirmModal';
-import type { PlayerAssignment } from '@/features/secret-number/types';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { useState, useCallback } from "react";
+import { Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import Bub from "@/components/mascot/Bub";
+import StickerButton from "@/components/ui/StickerButton";
+import SortablePlayerList from "./_sortable-list";
+import ConfirmModal from "@/components/shared/ConfirmModal";
+import type { PlayerAssignment } from "@/features/secret-number/types";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
 
 // -- Back button --------------------------------------------------
 
@@ -26,7 +26,13 @@ function BackButton({ onPress }: { onPress: () => void }) {
   return (
     <Pressable style={styles.backBtn} onPress={onPress}>
       <Svg width={16} height={14} viewBox="0 0 16 14" fill="none">
-        <Path d="M15 7 H1 M7 1 L1 7 L7 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path
+          d="M15 7 H1 M7 1 L1 7 L7 13"
+          stroke={COLORS.ink}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </Svg>
     </Pressable>
   );
@@ -74,7 +80,7 @@ export default function PhaseSorting({
             Drag players from lowest to highest
           </Text>
         </View>
-        <Bub pose="wave" size={56} color={COLORS.mint} hat={COLORS.pink} />
+        <Bub pose="wave" size={56} color={COLORS.mint} />
       </View>
 
       <ScrollView
@@ -85,7 +91,7 @@ export default function PhaseSorting({
         {/* Discussion prompt */}
         <View style={styles.promptWrap}>
           <Text style={styles.prompt}>
-            Work as a team — describe the subject you picked{'\n'}
+            Work as a team — describe the subject you picked{"\n"}
             to help others understand its relative position.
           </Text>
         </View>
@@ -121,7 +127,13 @@ export default function PhaseSorting({
           <View style={styles.finalizeInner}>
             <Text style={styles.finalizeText}>Finalize Order</Text>
             <Svg width={18} height={14} viewBox="0 0 18 14" fill="none">
-              <Path d="M1 7 H16 M10 1 L16 7 L10 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+              <Path
+                d="M1 7 H16 M10 1 L16 7 L10 13"
+                stroke={COLORS.ink}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
             </Svg>
           </View>
         </StickerButton>
@@ -173,8 +185,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 22,
     paddingTop: 16,
     paddingBottom: 8,
@@ -186,8 +198,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     borderWidth: 2.5,
     borderColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: COLORS.ink,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
@@ -229,8 +241,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   legendRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
   },
   legendLabel: {
@@ -238,7 +250,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.ink2,
     width: 14,
-    textAlign: 'center',
+    textAlign: "center",
   },
   legendText: {
     fontFamily: FONTS.mono,
@@ -249,7 +261,7 @@ const styles = StyleSheet.create({
 
   // -- Finalize button --
   finalizeWrap: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -257,9 +269,9 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   finalizeInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
     paddingVertical: 18,
   },
@@ -275,8 +287,8 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   previewRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 8,
     paddingVertical: 6,
     paddingHorizontal: 12,
