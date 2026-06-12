@@ -603,12 +603,7 @@ export default function HomeScreen() {
                   pointerEvents: "none",
                 }}
               >
-                <Bub
-                  pose="point"
-                  size={70}
-                  color={COLORS.yellow}
-                  hat={COLORS.purple}
-                />
+                <Bub pose="point" size={70} color={COLORS.yellow} />
               </View>
             </View>
           </View>

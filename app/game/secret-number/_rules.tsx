@@ -4,12 +4,12 @@
 // inside a sticker card, with the Bub mascot and a Start button.
 // Back arrow returns to Home.
 
-import { Pressable, ScrollView, Text, View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import Sticker from '@/components/ui/Sticker';
-import StickerButton from '@/components/ui/StickerButton';
-import Bub from '@/components/mascot/Bub';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { Pressable, ScrollView, Text, View, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import Sticker from "@/components/ui/Sticker";
+import StickerButton from "@/components/ui/StickerButton";
+import Bub from "@/components/mascot/Bub";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
 
 // -- Back arrow (same pattern as spin-bottle) --------------------
 
@@ -66,13 +66,12 @@ export default function PhaseRules({ onBack, onStart }: PhaseRulesProps) {
         </View>
 
         {/* Title */}
-        <Text style={styles.title}>
-          {"Secret\nNumber."}
-        </Text>
+        <Text style={styles.title}>{"Secret\nNumber."}</Text>
 
         {/* Tagline */}
         <Text style={styles.tagline}>
-          Can your team crack the order?{'\n'}Rank yourselves — lowest to highest.
+          Can your team crack the order?{"\n"}Rank yourselves — lowest to
+          highest.
         </Text>
 
         {/* Rules sticker card */}
@@ -86,7 +85,8 @@ export default function PhaseRules({ onBack, onStart }: PhaseRulesProps) {
               Everyone gets a secret number from 1 to 100.
             </RuleRow>
             <RuleRow num={3}>
-              Think of a subject in the category that matches your number's value.
+              Think of a subject in the category that matches your number's
+              value.
             </RuleRow>
             <RuleRow num={4}>
               Describe your subject — without revealing your number.
@@ -102,13 +102,18 @@ export default function PhaseRules({ onBack, onStart }: PhaseRulesProps) {
 
         {/* Bub mascot */}
         <View style={styles.bubWrap}>
-          <Bub pose="point" size={90} color={COLORS.yellow} hat={COLORS.mint} />
+          <Bub pose="dance" size={90} color={COLORS.yellow} />
         </View>
       </ScrollView>
 
       {/* Start button — pinned to bottom */}
       <View style={styles.startWrap}>
-        <StickerButton color={COLORS.mint} radius={RADIUS.pill} shadowY={5} onPress={onStart}>
+        <StickerButton
+          color={COLORS.mint}
+          radius={RADIUS.pill}
+          shadowY={5}
+          onPress={onStart}
+        >
           <View style={styles.startInner}>
             <Text style={styles.startText}>Start</Text>
             <Svg width={18} height={14} viewBox="0 0 18 14" fill="none">
@@ -145,8 +150,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     borderWidth: 2.5,
     borderColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: COLORS.ink,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     paddingBottom: 120,
   },
   badge: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     backgroundColor: COLORS.ink,
     borderRadius: RADIUS.pill,
     paddingHorizontal: 10,
@@ -198,8 +203,8 @@ const styles = StyleSheet.create({
     letterSpacing: -0.3,
   },
   ruleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     gap: 12,
   },
   ruleNum: {
@@ -207,8 +212,8 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     backgroundColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 1,
   },
   ruleNumText: {
@@ -225,12 +230,12 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   bubWrap: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 28,
     marginBottom: 20,
   },
   startWrap: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -238,9 +243,9 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   startInner: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
     paddingVertical: 20,
   },

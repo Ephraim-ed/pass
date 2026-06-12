@@ -127,7 +127,7 @@ export default function PhaseCategory({
             The team will describe subjects within this theme.
           </Text>
         </View>
-        <Bub pose="idle" size={56} color={COLORS.mint} hat={COLORS.yellow} />
+        <Bub pose="idle" size={56} color={COLORS.mint} />
       </View>
 
       {/* Search bar */}

@@ -12,15 +12,15 @@
 // Once you tap "next", your number is hidden again. No going back.
 // This is a pass-the-phone party game — physical phone handoff required.
 
-import { useState, useEffect, useCallback } from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-import Bub from '@/components/mascot/Bub';
-import StickerButton from '@/components/ui/StickerButton';
-import CensoredCard from './_censored-card';
-import ConfirmModal from '@/components/shared/ConfirmModal';
-import type { PlayerAssignment } from '@/features/secret-number/types';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { useState, useEffect, useCallback } from "react";
+import { Pressable, Text, View, StyleSheet } from "react-native";
+import Svg, { Path } from "react-native-svg";
+import Bub from "@/components/mascot/Bub";
+import StickerButton from "@/components/ui/StickerButton";
+import CensoredCard from "./_censored-card";
+import ConfirmModal from "@/components/shared/ConfirmModal";
+import type { PlayerAssignment } from "@/features/secret-number/types";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
 
 // -- Back button --------------------------------------------------
 
@@ -28,7 +28,13 @@ function BackButton({ onPress }: { onPress: () => void }) {
   return (
     <Pressable style={styles.backBtn} onPress={onPress}>
       <Svg width={16} height={14} viewBox="0 0 16 14" fill="none">
-        <Path d="M15 7 H1 M7 1 L1 7 L7 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+        <Path
+          d="M15 7 H1 M7 1 L1 7 L7 13"
+          stroke={COLORS.ink}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       </Svg>
     </Pressable>
   );
@@ -57,7 +63,12 @@ function PassPhonePrompt({
       <Text style={styles.passHint}>
         Make sure nobody else is looking at the screen.
       </Text>
-      <StickerButton color={COLORS.yellow} radius={RADIUS.pill} shadowY={5} onPress={onReady}>
+      <StickerButton
+        color={COLORS.yellow}
+        radius={RADIUS.pill}
+        shadowY={5}
+        onPress={onReady}
+      >
         <View style={styles.readyBtn}>
           <Text style={styles.readyBtnText}>I'm Ready</Text>
         </View>
@@ -143,11 +154,11 @@ export default function PhaseDistribution({
           <Text style={styles.heading}>Number Distribution</Text>
           <Text style={styles.subheading}>
             {isDone
-              ? 'All numbers assigned!'
+              ? "All numbers assigned!"
               : `Passing the phone — one player at a time`}
           </Text>
         </View>
-        <Bub pose="peek" size={56} color={COLORS.mint} hat={COLORS.purple} />
+        <Bub pose="peek" size={56} color={COLORS.mint} />
       </View>
 
       {/* Body */}
@@ -166,12 +177,18 @@ export default function PhaseDistribution({
                 radius={RADIUS.pill}
                 shadowY={5}
                 onPress={onStartGame}
-                style={{ width: '100%' }}
+                style={{ width: "100%" }}
               >
                 <View style={styles.doneBtn}>
                   <Text style={styles.doneBtnText}>Start Game</Text>
                   <Svg width={18} height={14} viewBox="0 0 18 14" fill="none">
-                    <Path d="M1 7 H16 M10 1 L16 7 L10 13" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <Path
+                      d="M1 7 H16 M10 1 L16 7 L10 13"
+                      stroke={COLORS.ink}
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </Svg>
                 </View>
               </StickerButton>
@@ -184,7 +201,7 @@ export default function PhaseDistribution({
         ) : isPassing ? (
           /* === Pass phone interstitial === */
           <PassPhonePrompt
-            playerName={currentPlayer?.name ?? ''}
+            playerName={currentPlayer?.name ?? ""}
             playerNumber={currentIndex + 1}
             totalPlayers={assignments.length}
             onReady={handleReady}
@@ -227,8 +244,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 22,
     paddingTop: 16,
   },
@@ -239,8 +256,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.cream,
     borderWidth: 2.5,
     borderColor: COLORS.ink,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     shadowColor: COLORS.ink,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 1,
@@ -260,12 +277,12 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 
   // -- Pass phone interstitial --
   passWrap: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 22,
     gap: 8,
   },
@@ -280,7 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
     color: COLORS.ink,
     letterSpacing: -1,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 46,
     marginVertical: 4,
   },
@@ -295,7 +312,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.ui,
     fontSize: 14,
     color: COLORS.inkSoft,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 20,
     marginBottom: 24,
     maxWidth: 260,
@@ -312,7 +329,7 @@ const styles = StyleSheet.create({
 
   // -- Done state (loop complete) --
   doneWrap: {
-    alignItems: 'center',
+    alignItems: "center",
     paddingHorizontal: 22,
     gap: 12,
   },
@@ -321,25 +338,25 @@ const styles = StyleSheet.create({
     fontSize: 28,
     color: COLORS.ink,
     letterSpacing: -0.5,
-    textAlign: 'center',
+    textAlign: "center",
   },
   doneSub: {
     fontFamily: FONTS.ui,
     fontSize: 15,
     color: COLORS.inkSoft,
-    textAlign: 'center',
+    textAlign: "center",
     lineHeight: 22,
     marginBottom: 20,
   },
   doneActions: {
-    width: '100%',
-    alignItems: 'center',
+    width: "100%",
+    alignItems: "center",
     gap: 14,
   },
   doneBtn: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 10,
     paddingVertical: 18,
   },
