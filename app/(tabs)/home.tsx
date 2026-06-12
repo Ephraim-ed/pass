@@ -1,5 +1,5 @@
-import { useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useRouter } from "expo-router";
+import { useState } from "react";
 import {
   Modal,
   Pressable,
@@ -7,24 +7,30 @@ import {
   Text,
   TextInput,
   View,
-} from 'react-native';
-import Svg, { Circle, Path, Polygon } from 'react-native-svg';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import CategoryPills from '@/components/shared/CategoryPills';
-import PlayerChip from '@/components/shared/PlayerChip';
-import Sticker from '@/components/ui/Sticker';
-import StickerButton from '@/components/ui/StickerButton';
-import TabBar from '@/components/ui/TabBar';
-import Bub from '@/components/mascot/Bub';
-import GameIcon from '@/components/game-icons/GameIcon';
-import { GAMES, Game, CATEGORIES } from '@/data/games';
-import { useApp } from '@/store/useApp';
-import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
-import { promptAndPickAvatar } from '@/utils/pickAvatar';
+} from "react-native";
+import Svg, { Circle, Path, Polygon } from "react-native-svg";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import CategoryPills from "@/components/shared/CategoryPills";
+import PlayerChip from "@/components/shared/PlayerChip";
+import Sticker from "@/components/ui/Sticker";
+import StickerButton from "@/components/ui/StickerButton";
+import TabBar from "@/components/ui/TabBar";
+import Bub from "@/components/mascot/Bub";
+import GameIcon from "@/components/game-icons/GameIcon";
+import { GAMES, Game, CATEGORIES } from "@/data/games";
+import { useApp } from "@/store/useApp";
+import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
+import { promptAndPickAvatar } from "@/utils/pickAvatar";
 
 // ── Decorative primitives ─────────────────────────────────────
 
-function Burst({ size = 80, color = COLORS.yellow }: { size?: number; color?: string }) {
+function Burst({
+  size = 80,
+  color = COLORS.yellow,
+}: {
+  size?: number;
+  color?: string;
+}) {
   const n = 12;
   const pts: string[] = [];
   for (let i = 0; i < n * 2; i++) {
@@ -34,12 +40,24 @@ function Burst({ size = 80, color = COLORS.yellow }: { size?: number; color?: st
   }
   return (
     <Svg width={size} height={size} viewBox="0 0 100 100">
-      <Polygon points={pts.join(' ')} fill={color} stroke={COLORS.ink} strokeWidth="3" strokeLinejoin="round" />
+      <Polygon
+        points={pts.join(" ")}
+        fill={color}
+        stroke={COLORS.ink}
+        strokeWidth="3"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
 
-function Squiggle({ width = 32, height = 14 }: { width?: number; height?: number }) {
+function Squiggle({
+  width = 32,
+  height = 14,
+}: {
+  width?: number;
+  height?: number;
+}) {
   return (
     <Svg width={width} height={height} viewBox="0 0 60 18" fill="none">
       <Path
@@ -56,9 +74,21 @@ function PlayersIcon() {
   return (
     <Svg width={14} height={10} viewBox="0 0 14 10" fill="none">
       <Circle cx={4} cy={3} r={2.2} stroke={COLORS.ink} strokeWidth={1.6} />
-      <Path d="M1 9 Q4 6 7 9" stroke={COLORS.ink} strokeWidth={1.6} strokeLinecap="round" fill="none" />
+      <Path
+        d="M1 9 Q4 6 7 9"
+        stroke={COLORS.ink}
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        fill="none"
+      />
       <Circle cx={10} cy={3} r={2.2} stroke={COLORS.ink} strokeWidth={1.6} />
-      <Path d="M7 9 Q10 6 13 9" stroke={COLORS.ink} strokeWidth={1.6} strokeLinecap="round" fill="none" />
+      <Path
+        d="M7 9 Q10 6 13 9"
+        stroke={COLORS.ink}
+        strokeWidth={1.6}
+        strokeLinecap="round"
+        fill="none"
+      />
     </Svg>
   );
 }
@@ -80,7 +110,13 @@ function GearIcon() {
 function ArrowRight() {
   return (
     <Svg width={12} height={10} viewBox="0 0 12 10" fill="none">
-      <Path d="M1 5 H10 M6 1 L10 5 L6 9" stroke={COLORS.cream} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      <Path
+        d="M1 5 H10 M6 1 L10 5 L6 9"
+        stroke={COLORS.cream}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </Svg>
   );
 }
@@ -89,40 +125,97 @@ function ArrowRight() {
 
 const GAME_ROTS = [-1.5, 1, -0.5, 1.5, -1, 0.8, -1.3, 0.6, -0.8, 1.2, -0.6];
 
-function GameCard({ game, onPress, rot = 0 }: { game: Game; onPress: () => void; rot?: number }) {
+function GameCard({
+  game,
+  onPress,
+  rot = 0,
+}: {
+  game: Game;
+  onPress: () => void;
+  rot?: number;
+}) {
   return (
     <Pressable onPress={onPress} style={{ flex: 1, margin: 6 }}>
       <Sticker color={game.color} radius={20} shadowY={5} rotate={rot}>
         <View style={{ padding: 14 }}>
           {/* age badge + mins */}
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 6 }}>
-            <View style={{ backgroundColor: COLORS.ink, borderRadius: RADIUS.pill, paddingHorizontal: 7, paddingVertical: 3 }}>
-              <Text style={{ fontFamily: FONTS.mono, fontSize: 9, color: COLORS.cream, letterSpacing: 0.8 }}>
-                {game.age === '18+' ? '18+' : 'ALL'}
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              marginBottom: 6,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: COLORS.ink,
+                borderRadius: RADIUS.pill,
+                paddingHorizontal: 7,
+                paddingVertical: 3,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: FONTS.mono,
+                  fontSize: 9,
+                  color: COLORS.cream,
+                  letterSpacing: 0.8,
+                }}
+              >
+                {game.age === "18+" ? "18+" : "ALL"}
               </Text>
             </View>
-            <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink, opacity: 0.7 }}>
+            <Text
+              style={{
+                fontFamily: FONTS.mono,
+                fontSize: 10,
+                color: COLORS.ink,
+                opacity: 0.7,
+              }}
+            >
               {game.mins}m
             </Text>
           </View>
 
           {/* centered icon */}
-          <View style={{ alignItems: 'center', marginVertical: 4 }}>
+          <View style={{ alignItems: "center", marginVertical: 4 }}>
             <GameIcon gameId={game.id} size={64} color={COLORS.cream} />
           </View>
 
           {/* name */}
           <Text
-            style={{ fontFamily: FONTS.display, fontSize: 15, color: COLORS.ink, lineHeight: 16, letterSpacing: -0.3, marginTop: 6 }}
+            style={{
+              fontFamily: FONTS.display,
+              fontSize: 15,
+              color: COLORS.ink,
+              lineHeight: 16,
+              letterSpacing: -0.3,
+              marginTop: 6,
+            }}
             numberOfLines={2}
           >
             {game.name}
           </Text>
 
           {/* players */}
-          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, marginTop: 5 }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 5,
+              marginTop: 5,
+            }}
+          >
             <PlayersIcon />
-            <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink, opacity: 0.75 }}>
+            <Text
+              style={{
+                fontFamily: FONTS.mono,
+                fontSize: 10,
+                color: COLORS.ink,
+                opacity: 0.75,
+              }}
+            >
               {game.tag}
             </Text>
           </View>
@@ -134,25 +227,37 @@ function GameCard({ game, onPress, rot = 0 }: { game: Game; onPress: () => void;
 
 // ── Screen ─────────────────────────────────────────────────────
 
-const ACCENT_COLORS = [COLORS.mint, COLORS.yellow, COLORS.pink, COLORS.sky, COLORS.purple, COLORS.tomato];
+const ACCENT_COLORS = [
+  COLORS.mint,
+  COLORS.yellow,
+  COLORS.pink,
+  COLORS.sky,
+  COLORS.purple,
+  COLORS.tomato,
+];
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { state, setCategory, addPlayer, removePlayer, setAvatar } = useApp();
   const [addingPlayer, setAddingPlayer] = useState(false);
-  const [newName, setNewName] = useState('');
+  const [newName, setNewName] = useState("");
 
-  const filtered = state.category === 'all' ? GAMES : GAMES.filter((g) => g.cat === state.category);
+  const filtered =
+    state.category === "all"
+      ? GAMES
+      : GAMES.filter((g) => g.cat === state.category);
 
   const categoryLabel =
-    state.category === 'all'
-      ? 'All games'
-      : CATEGORIES.find((c) => c.id === state.category)?.label ?? '';
+    state.category === "all"
+      ? "All games"
+      : (CATEGORIES.find((c) => c.id === state.category)?.label ?? "");
 
   function handleGamePress(game: Game) {
-    if (game.id === 'spin_bottle') {
-      router.push('/game/spin-bottle');
+    if (game.id === "spin_bottle") {
+      router.push("/game/spin-bottle");
+    } else if (game.id === "secret_number") {
+      router.push("/game/secret-number");
     } else {
       router.push(`/game/${game.id}`);
     }
@@ -160,27 +265,57 @@ export default function HomeScreen() {
 
   async function submitPlayer() {
     const name = newName.trim();
-    if (!name || state.players.includes(name)) { setNewName(''); setAddingPlayer(false); return; }
+    if (!name || state.players.includes(name)) {
+      setNewName("");
+      setAddingPlayer(false);
+      return;
+    }
     addPlayer(name);
-    setNewName('');
+    setNewName("");
     const uri = await promptAndPickAvatar(name);
     if (uri) setAvatar(name, uri);
     setAddingPlayer(false);
   }
 
   const now = new Date();
-  const dayStr = now.toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase();
-  const timeStr = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+  const dayStr = now
+    .toLocaleDateString("en-US", { weekday: "short" })
+    .toUpperCase();
+  const timeStr = now.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.cream }}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 120 }} showsVerticalScrollIndicator={false}>
-
+      <ScrollView
+        contentContainerStyle={{ paddingBottom: 120 }}
+        showsVerticalScrollIndicator={false}
+      >
         {/* ── Header ── */}
-        <View style={{ paddingHorizontal: 22, paddingTop: insets.top + 12, marginBottom: 18 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+        <View
+          style={{
+            paddingHorizontal: 22,
+            paddingTop: insets.top + 12,
+            marginBottom: 18,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+            }}
+          >
             <View>
-              <Text style={{ fontFamily: FONTS.mono, fontSize: 11, color: COLORS.ink2, letterSpacing: 1.2 }}>
+              <Text
+                style={{
+                  fontFamily: FONTS.mono,
+                  fontSize: 11,
+                  color: COLORS.ink2,
+                  letterSpacing: 1.2,
+                }}
+              >
                 {dayStr} · {timeStr}
               </Text>
               <Text
@@ -206,8 +341,8 @@ export default function HomeScreen() {
                 backgroundColor: COLORS.cream,
                 borderWidth: 2.5,
                 borderColor: COLORS.ink,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
                 shadowColor: COLORS.ink,
                 shadowOffset: { width: 0, height: 3 },
                 shadowOpacity: 1,
@@ -225,9 +360,25 @@ export default function HomeScreen() {
           <Sticker color={COLORS.ink} radius={RADIUS.xl} shadowY={4}>
             <View style={{ padding: 14 }}>
               {/* crew header row */}
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                  <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.yellow, letterSpacing: 1.4 }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 10,
+                }}
+              >
+                <View
+                  style={{ flexDirection: "row", alignItems: "center", gap: 8 }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: FONTS.mono,
+                      fontSize: 10,
+                      color: COLORS.yellow,
+                      letterSpacing: 1.4,
+                    }}
+                  >
                     TONIGHT'S CREW
                   </Text>
                   <View
@@ -240,7 +391,13 @@ export default function HomeScreen() {
                       borderColor: COLORS.cream,
                     }}
                   >
-                    <Text style={{ fontFamily: FONTS.display, fontSize: 11, color: COLORS.ink }}>
+                    <Text
+                      style={{
+                        fontFamily: FONTS.display,
+                        fontSize: 11,
+                        color: COLORS.ink,
+                      }}
+                    >
                       {state.players.length}
                     </Text>
                   </View>
@@ -255,12 +412,20 @@ export default function HomeScreen() {
                     paddingVertical: 5,
                   }}
                 >
-                  <Text style={{ fontFamily: FONTS.uiBold, fontSize: 12, color: COLORS.ink }}>+ Add</Text>
+                  <Text
+                    style={{
+                      fontFamily: FONTS.uiBold,
+                      fontSize: 12,
+                      color: COLORS.ink,
+                    }}
+                  >
+                    + Add
+                  </Text>
                 </Pressable>
               </View>
 
               {/* player chips */}
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+              <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                 {state.players.map((p, i) => (
                   <PlayerChip
                     key={p}
@@ -282,30 +447,51 @@ export default function HomeScreen() {
         </View>
 
         {/* ── Featured card ── */}
-        {state.category === 'all' && (
+        {state.category === "all" && (
           <View style={{ marginHorizontal: 22, marginBottom: 20 }}>
             {/* section label */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 10,
+              }}
+            >
               <Squiggle width={32} height={14} />
-              <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink2, letterSpacing: 1.4 }}>
+              <Text
+                style={{
+                  fontFamily: FONTS.mono,
+                  fontSize: 10,
+                  color: COLORS.ink2,
+                  letterSpacing: 1.4,
+                }}
+              >
                 BUB'S PICK FOR TONIGHT
               </Text>
             </View>
 
             {/* card + Bub container */}
             <View>
-              <Pressable onPress={() => router.push('/game/spin-bottle')}>
+              <Pressable onPress={() => router.push("/game/spin-bottle")}>
                 <Sticker color={COLORS.pink} radius={26} shadowY={6}>
-                  <View style={{ padding: 18, overflow: 'hidden' }}>
+                  <View style={{ padding: 18, overflow: "hidden" }}>
                     {/* burst decoration */}
-                    <View style={{ position: 'absolute', right: -10, top: -10, opacity: 0.9 }}>
+                    <View
+                      style={{
+                        position: "absolute",
+                        right: -10,
+                        top: -10,
+                        opacity: 0.9,
+                      }}
+                    >
                       <Burst size={84} color={COLORS.yellow} />
                     </View>
 
                     {/* FEATURED badge */}
                     <View
                       style={{
-                        alignSelf: 'flex-start',
+                        alignSelf: "flex-start",
                         backgroundColor: COLORS.ink,
                         borderRadius: RADIUS.pill,
                         paddingHorizontal: 8,
@@ -313,13 +499,27 @@ export default function HomeScreen() {
                         marginBottom: 10,
                       }}
                     >
-                      <Text style={{ fontFamily: FONTS.mono, fontSize: 9, color: COLORS.cream, letterSpacing: 1.2 }}>
+                      <Text
+                        style={{
+                          fontFamily: FONTS.mono,
+                          fontSize: 9,
+                          color: COLORS.cream,
+                          letterSpacing: 1.2,
+                        }}
+                      >
                         ★ FEATURED
                       </Text>
                     </View>
 
                     {/* title + icon row */}
-                    <View style={{ flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between', gap: 8 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "flex-end",
+                        justifyContent: "space-between",
+                        gap: 8,
+                      }}
+                    >
                       <View style={{ flex: 1 }}>
                         <Text
                           style={{
@@ -347,15 +547,31 @@ export default function HomeScreen() {
                         </Text>
 
                         {/* Play now button */}
-                        <View style={{ marginTop: 12, alignSelf: 'flex-start' }}>
+                        <View
+                          style={{ marginTop: 12, alignSelf: "flex-start" }}
+                        >
                           <StickerButton
                             color={COLORS.ink}
                             radius={RADIUS.pill}
                             shadowY={3}
-                            onPress={() => router.push('/game/spin-bottle')}
+                            onPress={() => router.push("/game/spin-bottle")}
                           >
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: 16, paddingVertical: 10 }}>
-                              <Text style={{ fontFamily: FONTS.uiBold, fontSize: 14, color: COLORS.cream }}>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                gap: 6,
+                                paddingHorizontal: 16,
+                                paddingVertical: 10,
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  fontFamily: FONTS.uiBold,
+                                  fontSize: 14,
+                                  color: COLORS.cream,
+                                }}
+                              >
                                 Play now
                               </Text>
                               <ArrowRight />
@@ -365,8 +581,12 @@ export default function HomeScreen() {
                       </View>
 
                       {/* game icon */}
-                      <View style={{ transform: [{ rotate: '-8deg' }] }}>
-                        <GameIcon gameId="spin_bottle" size={96} color={COLORS.cream} />
+                      <View style={{ transform: [{ rotate: "-8deg" }] }}>
+                        <GameIcon
+                          gameId="spin_bottle"
+                          size={96}
+                          color={COLORS.cream}
+                        />
                       </View>
                     </View>
                   </View>
@@ -376,14 +596,19 @@ export default function HomeScreen() {
               {/* Bub peeking at bottom-right */}
               <View
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   right: -8,
                   bottom: -16,
-                  transform: [{ rotate: '8deg' }],
-                  pointerEvents: 'none',
+                  transform: [{ rotate: "8deg" }],
+                  pointerEvents: "none",
                 }}
               >
-                <Bub pose="point" size={70} color={COLORS.yellow} hat={COLORS.purple} />
+                <Bub
+                  pose="point"
+                  size={70}
+                  color={COLORS.yellow}
+                  hat={COLORS.purple}
+                />
               </View>
             </View>
           </View>
@@ -392,26 +617,46 @@ export default function HomeScreen() {
         {/* ── Section header ── */}
         <View
           style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
             paddingHorizontal: 22,
             marginBottom: 12,
-            marginTop: state.category === 'all' ? 8 : 0,
+            marginTop: state.category === "all" ? 8 : 0,
           }}
         >
-          <Text style={{ fontFamily: FONTS.display, fontSize: 22, color: COLORS.ink, letterSpacing: -0.4 }}>
+          <Text
+            style={{
+              fontFamily: FONTS.display,
+              fontSize: 22,
+              color: COLORS.ink,
+              letterSpacing: -0.4,
+            }}
+          >
             {categoryLabel}
           </Text>
-          <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.ink2, letterSpacing: 1 }}>
+          <Text
+            style={{
+              fontFamily: FONTS.mono,
+              fontSize: 10,
+              color: COLORS.ink2,
+              letterSpacing: 1,
+            }}
+          >
             {filtered.length} GAMES
           </Text>
         </View>
 
         {/* ── Game grid ── */}
-        <View style={{ paddingHorizontal: 14, flexDirection: 'row', flexWrap: 'wrap' }}>
+        <View
+          style={{
+            paddingHorizontal: 14,
+            flexDirection: "row",
+            flexWrap: "wrap",
+          }}
+        >
           {filtered.map((game, i) => (
-            <View key={game.id} style={{ width: '50%' }}>
+            <View key={game.id} style={{ width: "50%" }}>
               <GameCard
                 game={game}
                 rot={GAME_ROTS[i % GAME_ROTS.length]}
@@ -432,7 +677,11 @@ export default function HomeScreen() {
         onRequestClose={() => setAddingPlayer(false)}
       >
         <Pressable
-          style={{ flex: 1, backgroundColor: 'rgba(26,22,38,0.5)', justifyContent: 'flex-end' }}
+          style={{
+            flex: 1,
+            backgroundColor: "rgba(26,22,38,0.5)",
+            justifyContent: "flex-end",
+          }}
           onPress={() => setAddingPlayer(false)}
         >
           <Pressable
@@ -455,14 +704,28 @@ export default function HomeScreen() {
                 borderRadius: 99,
                 backgroundColor: COLORS.ink,
                 opacity: 0.2,
-                alignSelf: 'center',
+                alignSelf: "center",
                 marginBottom: 18,
               }}
             />
-            <Text style={{ fontFamily: FONTS.display, fontSize: 26, color: COLORS.ink, letterSpacing: -0.5 }}>
+            <Text
+              style={{
+                fontFamily: FONTS.display,
+                fontSize: 26,
+                color: COLORS.ink,
+                letterSpacing: -0.5,
+              }}
+            >
               Who's joining?
             </Text>
-            <Text style={{ fontFamily: FONTS.ui, fontSize: 13, color: COLORS.ink2, marginTop: 4 }}>
+            <Text
+              style={{
+                fontFamily: FONTS.ui,
+                fontSize: 13,
+                color: COLORS.ink2,
+                marginTop: 4,
+              }}
+            >
               Add a player to tonight's crew.
             </Text>
             <TextInput
@@ -477,7 +740,7 @@ export default function HomeScreen() {
                 fontFamily: FONTS.ui,
                 fontSize: 16,
                 color: COLORS.ink,
-                backgroundColor: '#fff',
+                backgroundColor: "#fff",
                 borderWidth: 2.5,
                 borderColor: COLORS.ink,
                 borderRadius: 14,
@@ -485,7 +748,7 @@ export default function HomeScreen() {
                 marginTop: 16,
               }}
             />
-            <View style={{ flexDirection: 'row', gap: 10, marginTop: 16 }}>
+            <View style={{ flexDirection: "row", gap: 10, marginTop: 16 }}>
               <Pressable
                 onPress={() => setAddingPlayer(false)}
                 style={{
@@ -494,10 +757,18 @@ export default function HomeScreen() {
                   borderColor: COLORS.ink,
                   borderRadius: RADIUS.pill,
                   padding: 14,
-                  alignItems: 'center',
+                  alignItems: "center",
                 }}
               >
-                <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink }}>Cancel</Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.uiBold,
+                    fontSize: 15,
+                    color: COLORS.ink,
+                  }}
+                >
+                  Cancel
+                </Text>
               </Pressable>
               <StickerButton
                 color={COLORS.pink}
@@ -511,7 +782,7 @@ export default function HomeScreen() {
                     fontFamily: FONTS.uiBold,
                     fontSize: 15,
                     color: COLORS.ink,
-                    textAlign: 'center',
+                    textAlign: "center",
                     paddingVertical: 14,
                   }}
                 >
