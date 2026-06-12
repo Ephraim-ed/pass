@@ -11,6 +11,7 @@ export type Game = {
 };
 
 export const GAMES: Game[] = [
+  { id: 'icebreaker',   name: 'Icebreakers',         tag: '2–12', mins: 10, color: COLORS.mint,   cat: 'social',   age: 'all' },
   { id: 'truth_dare',   name: 'Truth or Dare',       tag: '2–10', mins: 15, color: COLORS.pink,   cat: 'classic',  age: '18+' },
   { id: 'spin_bottle',  name: 'Spin the Bottle',     tag: '3–12', mins: 10, color: '#D92020',     cat: 'classic',  age: '18+' },
   { id: 'drawing',      name: 'Doodle Duel',         tag: '2–8',  mins: 20, color: COLORS.yellow, cat: 'creative', age: 'all' },

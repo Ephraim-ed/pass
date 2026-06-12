@@ -160,7 +160,24 @@ function WouldRatherIcon({ color }: { color: string }) {
   );
 }
 
+function IcebreakerIcon({ color }: { color: string }) {
+  return (
+    <Svg viewBox="0 0 64 64" width="100%" height="100%">
+      {/* Ice cube */}
+      <Rect x="14" y="20" width="30" height="30" rx="6" fill={color} stroke={COLORS.ink} strokeWidth="2.5" />
+      <Line x1="20" y1="26" x2="28" y2="34" stroke={COLORS.ink} strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+      <Line x1="34" y1="28" x2="39" y2="33" stroke={COLORS.ink} strokeWidth="2" strokeLinecap="round" opacity="0.4" />
+      {/* Crack */}
+      <Path d="M29 20 L33 30 L27 36 L32 50" fill="none" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+      {/* Question bubble */}
+      <Circle cx="49" cy="17" r="10" fill={COLORS.ink} />
+      <SvgText x="49" y="22" textAnchor="middle" fontSize="13" fontWeight="bold" fill={color}>?</SvgText>
+    </Svg>
+  );
+}
+
 const ICONS: Record<string, React.FC<{ color: string }>> = {
+  icebreaker: IcebreakerIcon,
   truth_dare: TruthOrDareIcon,
   spin_bottle: SpinBottleIcon,
   drawing: DrawingIcon,
