@@ -12,7 +12,6 @@ import Svg, {
   Circle,
   Defs,
   Ellipse,
-  G,
   Path,
   RadialGradient,
   Rect,
@@ -20,7 +19,7 @@ import Svg, {
 } from 'react-native-svg';
 import { COLORS } from '@/theme/tokens';
 
-export type BubPose = 'idle' | 'wave' | 'point' | 'mic' | 'cheer' | 'peek';
+export type BubPose = 'idle' | 'wave' | 'point' | 'mic' | 'cheer' | 'peek' | 'dance' | 'sleep' | 'surprised' | 'shrug' | 'laugh';
 
 type Props = {
   pose?: BubPose;
@@ -34,35 +33,52 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
   const bodyY = useSharedValue(0);
   const bodyScale = useSharedValue(1);
   const armRot = useSharedValue(0);
-  const hatRot = useSharedValue(0);
+  const eyeX = useSharedValue(0);
+  const leftArmY = useSharedValue(0);
 
   useEffect(() => {
-    bodyRot.value = withRepeat(
-      withSequence(
-        withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
-        withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
-      ),
-      -1,
-      true,
-    );
-    bodyY.value = withRepeat(
-      withSequence(
-        withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
-        withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
-      ),
-      -1,
-      true,
-    );
-    hatRot.value = withRepeat(
-      withSequence(
-        withTiming(-3, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
-        withTiming(3, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
-      ),
-      -1,
-      true,
-    );
+    // Reset all animations
+    bodyRot.value = 0;
+    bodyY.value = 0;
+    bodyScale.value = 1;
+    armRot.value = 0;
+    eyeX.value = 0;
+    leftArmY.value = 0;
 
-    if (pose === 'wave') {
+    if (pose === 'idle' || pose === 'sleep') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'wave') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
       armRot.value = withRepeat(
         withSequence(
           withTiming(-10, { duration: 700 }),
@@ -72,14 +88,228 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
         true,
       );
     } else if (pose === 'point') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
       armRot.value = withRepeat(
         withSequence(withTiming(-2, { duration: 800 }), withTiming(2, { duration: 800 })),
         -1,
         true,
       );
+    } else if (pose === 'mic') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-2, { duration: 800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(2, { duration: 800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
     } else if (pose === 'cheer') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(1.5, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 1800, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
       bodyScale.value = withRepeat(
         withSequence(withTiming(1.04, { duration: 500 }), withTiming(1, { duration: 500 })),
+        -1,
+        true,
+      );
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-5, { duration: 600 }),
+          withTiming(5, { duration: 600 }),
+        ),
+        -1,
+        true,
+      );
+      leftArmY.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 600 }),
+          withTiming(0, { duration: 600 }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'laugh') {
+      // Laugh: rapid belly-bounce, slight forward tilt, no side-to-side
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 350, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 350, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-4, { duration: 350, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 350, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyScale.value = withRepeat(
+        withSequence(withTiming(1.06, { duration: 350 }), withTiming(1, { duration: 350 })),
+        -1,
+        true,
+      );
+      // Minimal arm wiggle — not flapping
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(2, { duration: 350 }),
+          withTiming(-2, { duration: 350 }),
+        ),
+        -1,
+        true,
+      );
+      leftArmY.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 350 }),
+          withTiming(-1, { duration: 350 }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'peek') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+          withTiming(3, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-2, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 2000, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      eyeX.value = withRepeat(
+        withSequence(
+          withTiming(2, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
+          withTiming(-2, { duration: 1500, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 1000 }),
+          withTiming(3, { duration: 1000 }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'dance') {
+      bodyRot.value = withRepeat(
+        withSequence(
+          withTiming(-5, { duration: 400, easing: Easing.inOut(Easing.sin) }),
+          withTiming(5, { duration: 400, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      bodyY.value = withRepeat(
+        withSequence(
+          withTiming(-5, { duration: 400, easing: Easing.inOut(Easing.sin) }),
+          withTiming(0, { duration: 400, easing: Easing.inOut(Easing.sin) }),
+        ),
+        -1,
+        true,
+      );
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-15, { duration: 400 }),
+          withTiming(15, { duration: 400 }),
+        ),
+        -1,
+        true,
+      );
+      leftArmY.value = withRepeat(
+        withSequence(
+          withTiming(5, { duration: 400 }),
+          withTiming(-5, { duration: 400 }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'surprised') {
+      bodyScale.value = withTiming(1.08, { duration: 200 });
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 400 }),
+          withTiming(3, { duration: 400 }),
+        ),
+        -1,
+        true,
+      );
+      leftArmY.value = withRepeat(
+        withSequence(
+          withTiming(-2, { duration: 400 }),
+          withTiming(0, { duration: 400 }),
+        ),
+        -1,
+        true,
+      );
+    } else if (pose === 'shrug') {
+      armRot.value = withRepeat(
+        withSequence(
+          withTiming(-3, { duration: 800 }),
+          withTiming(3, { duration: 800 }),
+        ),
+        -1,
+        true,
+      );
+      leftArmY.value = withRepeat(
+        withSequence(
+          withTiming(-2, { duration: 800 }),
+          withTiming(0, { duration: 800 }),
+        ),
         -1,
         true,
       );
@@ -94,22 +324,35 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
     ],
   }));
 
-  // Rotate around the right shoulder (SVG x=82, y=60 in 120×120 viewBox).
-  // RN rotates around the view center (60,60), so we shift pivot via translate-rotate-translate.
   const armStyle = useAnimatedStyle(() => {
-    const pivotX = (22 / 120) * size; // shoulder is 22 units right of center
+    const pivotX = ((100 - 60) / 120) * size;
+    const pivotY = ((74 - 60) / 120) * size;
     return {
       transform: [
         { translateX: pivotX },
+        { translateY: pivotY },
         { rotate: `${armRot.value}deg` },
         { translateX: -pivotX },
+        { translateY: -pivotY },
       ],
     };
   });
 
-  const hatStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${hatRot.value}deg` }],
+  const leftArmStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateY: leftArmY.value },
+    ],
   }));
+
+  const eyeStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: eyeX.value }],
+  }));
+
+  // Pose layout flags
+  const showStaticLeftArm = pose === 'idle' || pose === 'sleep' || pose === 'wave' || pose === 'point' || pose === 'mic';
+  const showStaticRightArm = pose === 'idle' || pose === 'sleep';
+  const showRightArmOverlay = pose === 'wave' || pose === 'point' || pose === 'cheer' || pose === 'peek' || pose === 'surprised' || pose === 'dance' || pose === 'shrug' || pose === 'laugh';
+  const showLeftArmOverlay = pose === 'cheer' || pose === 'peek' || pose === 'surprised' || pose === 'dance' || pose === 'shrug' || pose === 'laugh';
 
   return (
     <View style={{ width: size, height: size }}>
@@ -125,55 +368,114 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
           {/* Ground shadow */}
           <Ellipse cx="60" cy="112" rx="28" ry="6" fill={COLORS.ink} opacity={0.15} />
 
-          {/* Static arms for non-wave/point poses */}
-          {(pose === 'idle' || pose === 'cheer' || pose === 'peek') && (
+          {/* Left arm — static, behind body */}
+          {showStaticLeftArm && (
             <>
-              <Path d="M38 65 Q20 60 18 50" stroke={color} strokeWidth="10" strokeLinecap="round" fill="none" />
-              <Path d="M82 65 Q100 60 102 52" stroke={color} strokeWidth="10" strokeLinecap="round" fill="none" />
-            </>
-          )}
-          {pose === 'mic' && (
-            <>
-              <Path d="M82 65 Q100 60 102 52" stroke={color} strokeWidth="10" strokeLinecap="round" fill="none" />
-              <Rect x="98" y="44" width="8" height="14" rx="4" fill={COLORS.ink2} stroke={COLORS.ink} strokeWidth="1.5" />
+              {/* Left arm outline */}
+              <Path d="M24 74 Q20 76 18 78" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+              {/* Left arm fill */}
+              <Path d="M24 74 Q20 76 18 78" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
             </>
           )}
 
-          {/* Pear body */}
+          {/* Right arm — static, behind body */}
+          {showStaticRightArm && (
+            <>
+              {/* Right arm outline — same visible length as left arm */}
+              <Path d="M96 74 Q100 76 102 78" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+              {/* Right arm fill */}
+              <Path d="M96 74 Q100 76 102 78" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+            </>
+          )}
+
+          {/* Mic pose — right arm holding mic pointed at mouth */}
+          {pose === 'mic' && (
+            <>
+              {/* Right arm outline — curves toward mouth */}
+              <Path d="M96 74 Q100 76 104 78" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+              {/* Right arm fill */}
+              <Path d="M96 74 Q100 76 104 78" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+              {/* Mic handle */}
+              <Rect x="102" y="80" width="6" height="6" rx="1" fill={COLORS.ink} />
+              {/* Mic head — at the mouth level */}
+              <Circle cx="104" cy="78" r="6" fill={COLORS.ink2} stroke={COLORS.ink} strokeWidth="2" />
+            </>
+          )}
+
+          {/* Cute Blob Body */}
           <Path
-            d="M60 22 C34 22 22 40 22 62 C22 84 38 104 60 104 C82 104 98 84 98 62 C98 40 86 22 60 22 Z"
+            d="M60 18
+               C38 18, 20 32, 20 56
+               C20 72, 24 88, 34 98
+               C40 104, 50 106, 60 106
+               C70 106, 80 104, 86 98
+               C96 88, 100 72, 100 56
+               C100 32, 82 18, 60 18
+               Z"
             fill={color}
             stroke={COLORS.ink}
             strokeWidth="2.5"
           />
           <Path
-            d="M60 22 C34 22 22 40 22 62 C22 84 38 104 60 104 C82 104 98 84 98 62 C98 40 86 22 60 22 Z"
+            d="M60 18
+               C38 18, 20 32, 20 56
+               C20 72, 24 88, 34 98
+               C40 104, 50 106, 60 106
+               C70 106, 80 104, 86 98
+               C96 88, 100 72, 100 56
+               C100 32, 82 18, 60 18
+               Z"
             fill={`url(#grad_${pose})`}
           />
 
+          {/* Little feet */}
+          <Ellipse cx="42" cy="104" rx="9" ry="5" fill={color} stroke={COLORS.ink} strokeWidth="2" />
+          <Ellipse cx="78" cy="104" rx="9" ry="5" fill={color} stroke={COLORS.ink} strokeWidth="2" />
+
           {/* Blush */}
-          <Ellipse cx="38" cy="72" rx="8" ry="5" fill={COLORS.pink} opacity={0.35} />
-          <Ellipse cx="82" cy="72" rx="8" ry="5" fill={COLORS.pink} opacity={0.35} />
-
-          {/* Eyes */}
-          <Ellipse cx="48" cy="58" rx="6" ry="9" fill="white" stroke={COLORS.ink} strokeWidth="2" />
-          <Ellipse cx="49" cy="59" rx="3" ry="3.5" fill={COLORS.ink} />
-          <Ellipse cx="50" cy="57" rx="1.5" ry="1.5" fill="white" />
-
-          <Ellipse cx="72" cy="58" rx="6" ry="9" fill="white" stroke={COLORS.ink} strokeWidth="2" />
-          <Ellipse cx="73" cy="59" rx="3" ry="3.5" fill={COLORS.ink} />
-          <Ellipse cx="74" cy="57" rx="1.5" ry="1.5" fill="white" />
+          <Ellipse cx="36" cy="68" rx="7" ry="4" fill={COLORS.pink} opacity={0.35} />
+          <Ellipse cx="84" cy="68" rx="7" ry="4" fill={COLORS.pink} opacity={0.35} />
 
           {/* Mouth */}
-          {pose === 'mic' ? (
-            <Ellipse cx="60" cy="84" rx="6" ry="4" fill={COLORS.ink} />
-          ) : (
-            <Path d="M50 84 Q60 93 70 84" fill={COLORS.ink} />
+          {(pose === 'idle' || pose === 'wave' || pose === 'point' || pose === 'dance' || pose === 'shrug') && (
+            <Path d="M50 76 Q60 84 70 76" fill="none" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" />
+          )}
+          {(pose === 'mic' || pose === 'peek' || pose === 'surprised') && (
+            <Ellipse cx="60" cy="78" rx="5" ry="4" fill={COLORS.ink} />
+          )}
+          {pose === 'sleep' && (
+            <Path d="M54 78 Q60 82 66 78" fill="none" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" />
+          )}
+          {pose === 'cheer' && (
+            <Ellipse cx="60" cy="78" rx="6" ry="5" fill={COLORS.ink} />
+          )}
+          {pose === 'laugh' && (
+            <Ellipse cx="60" cy="78" rx="6" ry="5" fill={COLORS.ink} />
           )}
         </Svg>
 
-        {/* Animated arm overlay (wave / point) */}
-        {(pose === 'wave' || pose === 'point') && (
+        {/* Eye overlay */}
+        <Animated.View style={[{ position: 'absolute', top: 0, left: 0, width: size, height: size }, eyeStyle]}>
+          <Svg viewBox="0 0 120 120" width="100%" height="100%">
+            {pose === 'sleep' ? (
+              <>
+                {/* Single closed eye — centered at x=60 like the open eye */}
+                <Path d="M46 48 Q60 54 74 48" fill="none" stroke={COLORS.ink} strokeWidth="2.5" strokeLinecap="round" />
+              </>
+            ) : (
+              <>
+                <Circle cx="60" cy="48" r="19" fill="white" stroke={COLORS.ink} strokeWidth="2.5" />
+                <Circle cx="60" cy="48" r="11" fill={COLORS.ink} />
+                <Circle cx="60" cy="48" r="5" fill={COLORS.ink2} />
+                <Circle cx="54" cy="42" r="4" fill="white" opacity={0.9} />
+                <Circle cx="64" cy="52" r="1.5" fill="white" opacity={0.5} />
+              </>
+            )}
+          </Svg>
+        </Animated.View>
+
+        {/* Animated right arm overlay */}
+        {showRightArmOverlay && (
           <Animated.View
             style={[
               { position: 'absolute', top: 0, left: 0, width: size, height: size },
@@ -182,34 +484,114 @@ export default function Bub({ pose = 'idle', size = 120, color = COLORS.yellow, 
           >
             <Svg viewBox="0 0 120 120" width="100%" height="100%">
               {pose === 'wave' && (
-                <Path d="M82 60 Q100 40 96 30" stroke={color} strokeWidth="10" strokeLinecap="round" fill="none" />
+                <>
+                  <Path d="M100 74 Q108 64 106 58" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q108 64 106 58" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
               )}
               {pose === 'point' && (
                 <>
-                  <Path d="M82 60 Q104 55 108 50" stroke={color} strokeWidth="10" strokeLinecap="round" fill="none" />
-                  <Circle cx="108" cy="48" r="5" fill={color} stroke={COLORS.ink} strokeWidth="2" />
+                  <Path d="M100 74 Q108 70 112 68" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q108 70 112 68" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                  {/* Finger tip — no outline */}
+                  <Circle cx="112" cy="68" r="4" fill={color} />
+                </>
+              )}
+              {pose === 'cheer' && (
+                <>
+                  <Path d="M100 74 Q108 58 106 52" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q108 58 106 52" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'laugh' && (
+                <>
+                  {/* Laugh: right arm stays near body, small wiggle */}
+                  <Path d="M100 74 Q106 78 108 80" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q106 78 108 80" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+
+              {pose === 'peek' && (
+                <>
+                  {/* Arm near mouth */}
+                  <Path d="M100 74 Q98 66 96 62" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q98 66 96 62" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'surprised' && (
+                <>
+                  {/* Arm on cheek */}
+                  <Path d="M100 74 Q96 60 94 58" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q96 60 94 58" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'dance' && (
+                <>
+                  <Path d="M100 74 Q104 60 102 54" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q104 60 102 54" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'shrug' && (
+                <>
+                  <Path d="M100 74 Q104 68 108 66" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M100 74 Q104 68 108 66" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
                 </>
               )}
             </Svg>
           </Animated.View>
         )}
 
-        {/* Animated hat overlay */}
-        <Animated.View
-          style={[
-            { position: 'absolute', top: 0, left: 0, width: size, height: size },
-            hatStyle,
-          ]}
-        >
-          <Svg viewBox="0 0 120 120" width="100%" height="100%">
-            {/* Hat: tip at top (y≈0), base sitting on head (y≈24) */}
-            <Path d="M44 24 L60 1 L76 24 Z" fill={hat} stroke={COLORS.ink} strokeWidth="2" strokeLinejoin="round" />
-            {/* Stripe */}
-            <Path d="M49 18 L71 18" stroke={COLORS.cream} strokeWidth="2" strokeLinecap="round" opacity={0.7} />
-            {/* Pompom */}
-            <Circle cx="60" cy="1" r="4.5" fill={COLORS.yellow} stroke={COLORS.ink} strokeWidth="1.5" />
-          </Svg>
-        </Animated.View>
+        {/* Animated left arm overlay */}
+        {showLeftArmOverlay && (
+          <Animated.View
+            style={[
+              { position: 'absolute', top: 0, left: 0, width: size, height: size },
+              leftArmStyle,
+            ]}
+          >
+            <Svg viewBox="0 0 120 120" width="100%" height="100%">
+              {pose === 'cheer' && (
+                <>
+                  <Path d="M24 74 Q18 58 20 52" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q18 58 20 52" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'laugh' && (
+                <>
+                  {/* Laugh: left arm stays near body, small wiggle */}
+                  <Path d="M24 74 Q18 78 16 80" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q18 78 16 80" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'peek' && (
+                <>
+                  {/* Arm near mouth */}
+                  <Path d="M24 74 Q26 66 28 62" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q26 66 28 62" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'surprised' && (
+                <>
+                  {/* Arm on cheek */}
+                  <Path d="M24 74 Q28 60 30 58" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q28 60 30 58" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'dance' && (
+                <>
+                  <Path d="M24 74 Q20 60 22 54" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q20 60 22 54" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+              {pose === 'shrug' && (
+                <>
+                  <Path d="M24 74 Q20 68 16 66" stroke={COLORS.ink} strokeWidth="12" strokeLinecap="round" fill="none" />
+                  <Path d="M24 74 Q20 68 16 66" stroke={color} strokeWidth="8" strokeLinecap="round" fill="none" />
+                </>
+              )}
+            </Svg>
+          </Animated.View>
+        )}
       </Animated.View>
     </View>
   );
