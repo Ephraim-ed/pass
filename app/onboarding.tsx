@@ -1,71 +1,60 @@
-import { useRouter } from "expo-router";
-import { useCallback, useRef, useState } from "react";
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-import Svg, { Circle, Path } from "react-native-svg";
-import { GestureDetector, Gesture } from "react-native-gesture-handler";
-import { runOnJS, useSharedValue } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Dots from "@/components/ui/Dots";
-import StickerButton from "@/components/ui/StickerButton";
-import Bub from "@/components/mascot/Bub";
-import { useApp } from "@/store/useApp";
-import { COLORS, FONTS, RADIUS } from "@/theme/tokens";
-import { promptAndPickAvatar } from "@/utils/pickAvatar";
+import { useRouter } from 'expo-router';
+import { useCallback, useRef, useState } from 'react';
+import { Image, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import Svg, { Circle, Path } from 'react-native-svg';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { runOnJS, useSharedValue } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Dots from '@/components/ui/Dots';
+import StickerButton from '@/components/ui/StickerButton';
+import Bub from '@/components/mascot/Bub';
+import { useApp } from '@/store/useApp';
+import { COLORS, FONTS, RADIUS } from '@/theme/tokens';
+import { promptAndPickAvatar } from '@/utils/pickAvatar';
 
 // ── Intro slide definitions ────────────────────────────────────
 
 const SLIDES = [
   {
-    badge: "MEET YOUR HOST",
-    headline: "Bub runs\nthe show.",
-    body: "Your MC for 11 party games. One phone, no accounts, all chaos.",
-    pose: "wave" as const,
+    badge: 'MEET YOUR HOST',
+    headline: 'Bub runs\nthe show.',
+    body: 'Your MC for 11 party games. One phone, no accounts, all chaos.',
+    pose: 'wave' as const,
     color: COLORS.yellow,
     hat: COLORS.pink,
     bg: COLORS.cream2,
   },
   {
-    badge: "HOW IT WORKS",
-    headline: "Tap, play,\npass it on.",
-    body: "No sign-ups. No downloads. Just tap a game and hand the phone around.",
-    pose: "point" as const,
+    badge: 'HOW IT WORKS',
+    headline: 'Tap, play,\npass it on.',
+    body: 'No sign-ups. No downloads. Just tap a game and hand the phone around.',
+    pose: 'point' as const,
     color: COLORS.mint,
     hat: COLORS.tomato,
-    bg: "#E9D7FF",
+    bg: '#E9D7FF',
   },
   {
-    badge: "OFFLINE",
-    headline: "Works on\nairplane mode.",
-    body: "Zero signal required. Everything lives right here on the device.",
-    pose: "cheer" as const,
+    badge: 'OFFLINE',
+    headline: 'Works on\nairplane mode.',
+    body: 'Zero signal required. Everything lives right here on the device.',
+    pose: 'cheer' as const,
     color: COLORS.sky,
     hat: COLORS.yellow,
-    bg: "#D4F5E9",
+    bg: '#D4F5E9',
   },
 ];
 
 // crew step is index 3
 const TOTAL_STEPS = SLIDES.length + 1;
 const CREW_STEP = SLIDES.length;
-const CREW_BG = "#FFF0C4";
+const CREW_BG = '#FFF0C4';
 
 // ── Accent colours for player chips ───────────────────────────
 
 const CHIP_COLORS = [
-  COLORS.mint,
-  COLORS.pink,
-  COLORS.sky,
-  COLORS.purple,
-  COLORS.tomato,
-  COLORS.yellow,
+  COLORS.mint, COLORS.pink, COLORS.sky, COLORS.purple, COLORS.tomato, COLORS.yellow,
 ];
+
 
 function PlayerChipOnboarding({
   name,
@@ -88,8 +77,8 @@ function PlayerChipOnboarding({
   return (
     <View
       style={{
-        flexDirection: "row",
-        alignItems: "center",
+        flexDirection: 'row',
+        alignItems: 'center',
         backgroundColor: color,
         borderWidth: 2,
         borderColor: COLORS.ink,
@@ -110,46 +99,23 @@ function PlayerChipOnboarding({
             height: 26,
             borderRadius: 13,
             backgroundColor: COLORS.ink,
-            overflow: "hidden",
-            alignItems: "center",
-            justifyContent: "center",
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           {avatar ? (
-            <Image
-              source={{ uri: avatar }}
-              style={{ width: 26, height: 26 }}
-              resizeMode="cover"
-            />
+            <Image source={{ uri: avatar }} style={{ width: 26, height: 26 }} resizeMode="cover" />
           ) : (
-            <Text
-              style={{
-                fontFamily: FONTS.display,
-                fontSize: 12,
-                color: COLORS.cream,
-              }}
-            >
+            <Text style={{ fontFamily: FONTS.display, fontSize: 12, color: COLORS.cream }}>
               {name.charAt(0).toUpperCase()}
             </Text>
           )}
         </View>
       </Pressable>
-      <Text
-        style={{ fontFamily: FONTS.uiBold, fontSize: 13, color: COLORS.ink }}
-      >
-        {name}
-      </Text>
+      <Text style={{ fontFamily: FONTS.uiBold, fontSize: 13, color: COLORS.ink }}>{name}</Text>
       <Pressable onPress={onRemove} hitSlop={8}>
-        <Text
-          style={{
-            fontFamily: FONTS.uiBold,
-            fontSize: 15,
-            color: COLORS.ink,
-            lineHeight: 17,
-          }}
-        >
-          ×
-        </Text>
+        <Text style={{ fontFamily: FONTS.uiBold, fontSize: 15, color: COLORS.ink, lineHeight: 17 }}>×</Text>
       </Pressable>
     </View>
   );
@@ -161,7 +127,7 @@ export default function OnboardingScreen() {
   const [step, setStep] = useState(0);
   const [players, setPlayers] = useState<string[]>([]);
   const [avatars, setAvatars] = useState<Record<string, string>>({});
-  const [nameInput, setNameInput] = useState("");
+  const [nameInput, setNameInput] = useState('');
   const inputRef = useRef<TextInput>(null);
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -195,12 +161,9 @@ export default function OnboardingScreen() {
 
   async function addPlayer() {
     const name = nameInput.trim();
-    if (!name || players.includes(name)) {
-      setNameInput("");
-      return;
-    }
+    if (!name || players.includes(name)) { setNameInput(''); return; }
     setPlayers((prev) => [...prev, name]);
-    setNameInput("");
+    setNameInput('');
     const uri = await promptAndPickAvatar(name);
     if (uri) setPlayerAvatar(name, uri);
     inputRef.current?.focus();
@@ -208,10 +171,7 @@ export default function OnboardingScreen() {
 
   function removePlayer(name: string) {
     setPlayers((prev) => prev.filter((p) => p !== name));
-    setAvatars((prev) => {
-      const { [name]: _, ...rest } = prev;
-      return rest;
-    });
+    setAvatars((prev) => { const { [name]: _, ...rest } = prev; return rest; });
   }
 
   function setPlayerAvatar(name: string, uri: string) {
@@ -220,7 +180,7 @@ export default function OnboardingScreen() {
 
   function finish() {
     update({ players, avatars, hasOnboarded: true });
-    router.replace("/(tabs)/home");
+    router.replace('/(tabs)/home');
   }
 
   function skipIntro() {
@@ -237,100 +197,73 @@ export default function OnboardingScreen() {
   return (
     <GestureDetector gesture={gesture}>
       <View style={{ flex: 1, backgroundColor: bg }}>
+
         {/* Skip — only on intro slides */}
         {!isCrewStep && (
           <Pressable
             onPress={skipIntro}
-            style={{
-              position: "absolute",
-              top: insets.top + 14,
-              right: 24,
-              zIndex: 10,
-              padding: 8,
-            }}
+            style={{ position: 'absolute', top: insets.top + 14, right: 24, zIndex: 10, padding: 8 }}
           >
-            <Text
-              style={{
-                fontFamily: FONTS.mono,
-                fontSize: 12,
-                color: COLORS.ink2,
-                letterSpacing: 1,
-              }}
-            >
+            <Text style={{ fontFamily: FONTS.mono, fontSize: 12, color: COLORS.ink2, letterSpacing: 1 }}>
               SKIP
             </Text>
           </Pressable>
         )}
 
         {/* ── Intro slides ── */}
-        {!isCrewStep &&
-          (() => {
-            const s = SLIDES[step];
-            return (
+        {!isCrewStep && (() => {
+          const s = SLIDES[step];
+          return (
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32 }}>
+              <View style={{ marginBottom: 32 }}>
+                <Bub pose={s.pose} size={160} color={s.color} hat={s.hat} />
+              </View>
+
               <View
                 style={{
-                  flex: 1,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  paddingHorizontal: 32,
+                  backgroundColor: COLORS.ink,
+                  borderRadius: RADIUS.pill,
+                  paddingHorizontal: 14,
+                  paddingVertical: 6,
+                  marginBottom: 20,
                 }}
               >
-                <View style={{ marginBottom: 32 }}>
-                  <Bub pose={s.pose} size={160} color={s.color} hat={s.hat} />
-                </View>
-
-                <View
-                  style={{
-                    backgroundColor: COLORS.ink,
-                    borderRadius: RADIUS.pill,
-                    paddingHorizontal: 14,
-                    paddingVertical: 6,
-                    marginBottom: 20,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: FONTS.mono,
-                      fontSize: 10,
-                      color: COLORS.cream,
-                      letterSpacing: 1.5,
-                    }}
-                  >
-                    {s.badge}
-                  </Text>
-                </View>
-
-                <Text
-                  style={{
-                    fontFamily: FONTS.display,
-                    fontSize: 42,
-                    color: COLORS.ink,
-                    lineHeight: 42 * 0.98,
-                    letterSpacing: -42 * 0.025,
-                    textAlign: "center",
-                    marginBottom: 16,
-                  }}
-                >
-                  {s.headline}
+                <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.cream, letterSpacing: 1.5 }}>
+                  {s.badge}
                 </Text>
-
-                <Text
-                  style={{
-                    fontFamily: FONTS.ui,
-                    fontSize: 16,
-                    color: COLORS.inkSoft,
-                    textAlign: "center",
-                    lineHeight: 24,
-                    marginBottom: 48,
-                  }}
-                >
-                  {s.body}
-                </Text>
-
-                <Dots total={TOTAL_STEPS} active={step} />
               </View>
-            );
-          })()}
+
+              <Text
+                style={{
+                  fontFamily: FONTS.display,
+                  fontSize: 42,
+                  color: COLORS.ink,
+                  lineHeight: 42 * 0.98,
+                  letterSpacing: -42 * 0.025,
+                  textAlign: 'center',
+                  marginBottom: 16,
+                }}
+              >
+                {s.headline}
+              </Text>
+
+              <Text
+                style={{
+                  fontFamily: FONTS.ui,
+                  fontSize: 16,
+                  color: COLORS.inkSoft,
+                  textAlign: 'center',
+                  lineHeight: 24,
+                  marginBottom: 48,
+                }}
+              >
+                {s.body}
+              </Text>
+
+              <Dots total={TOTAL_STEPS} active={step} />
+            </View>
+          );
+        })()}
 
         {/* ── Crew step ── */}
         {isCrewStep && (
@@ -344,24 +277,12 @@ export default function OnboardingScreen() {
             keyboardShouldPersistTaps="handled"
           >
             {/* Bub + headline */}
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "flex-end",
-                gap: 16,
-                marginBottom: 20,
-              }}
-            >
-              <Bub
-                pose="cheer"
-                size={100}
-                color={COLORS.pink}
-                hat={COLORS.purple}
-              />
+            <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 16, marginBottom: 20 }}>
+              <Bub pose="cheer" size={100} color={COLORS.pink} hat={COLORS.purple} />
               <View style={{ flex: 1, paddingBottom: 8 }}>
                 <View
                   style={{
-                    alignSelf: "flex-start",
+                    alignSelf: 'flex-start',
                     backgroundColor: COLORS.ink,
                     borderRadius: RADIUS.pill,
                     paddingHorizontal: 10,
@@ -369,14 +290,7 @@ export default function OnboardingScreen() {
                     marginBottom: 10,
                   }}
                 >
-                  <Text
-                    style={{
-                      fontFamily: FONTS.mono,
-                      fontSize: 10,
-                      color: COLORS.cream,
-                      letterSpacing: 1.5,
-                    }}
-                  >
+                  <Text style={{ fontFamily: FONTS.mono, fontSize: 10, color: COLORS.cream, letterSpacing: 1.5 }}>
                     THE CREW
                   </Text>
                 </View>
@@ -403,12 +317,11 @@ export default function OnboardingScreen() {
                 marginBottom: 24,
               }}
             >
-              Add at least 2 players to get started. You can change the crew
-              anytime.
+              Add at least 2 players to get started. You can change the crew anytime.
             </Text>
 
             {/* Input row */}
-            <View style={{ flexDirection: "row", gap: 10, marginBottom: 16 }}>
+            <View style={{ flexDirection: 'row', gap: 10, marginBottom: 16 }}>
               <TextInput
                 ref={inputRef}
                 value={nameInput}
@@ -423,7 +336,7 @@ export default function OnboardingScreen() {
                   fontFamily: FONTS.ui,
                   fontSize: 16,
                   color: COLORS.ink,
-                  backgroundColor: "#fff",
+                  backgroundColor: '#fff',
                   borderWidth: 2.5,
                   borderColor: COLORS.ink,
                   borderRadius: 14,
@@ -441,8 +354,8 @@ export default function OnboardingScreen() {
                   width: 50,
                   borderRadius: 14,
                   backgroundColor: COLORS.ink,
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   shadowColor: COLORS.ink,
                   shadowOffset: { width: 0, height: 3 },
                   shadowOpacity: 1,
@@ -450,25 +363,14 @@ export default function OnboardingScreen() {
                 }}
               >
                 <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-                  <Path
-                    d="M10 4 V16 M4 10 H16"
-                    stroke={COLORS.cream}
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
+                  <Path d="M10 4 V16 M4 10 H16" stroke={COLORS.cream} strokeWidth="2.5" strokeLinecap="round" />
                 </Svg>
               </Pressable>
             </View>
 
             {/* Player chips */}
             {players.length > 0 && (
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  marginBottom: 8,
-                }}
-              >
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginBottom: 8 }}>
                 {players.map((name, i) => (
                   <PlayerChipOnboarding
                     key={name}
@@ -483,41 +385,19 @@ export default function OnboardingScreen() {
             )}
 
             {players.length === 0 && (
-              <Text
-                style={{
-                  fontFamily: FONTS.mono,
-                  fontSize: 11,
-                  color: COLORS.ink2,
-                  letterSpacing: 0.5,
-                  marginBottom: 8,
-                }}
-              >
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 11, color: COLORS.ink2, letterSpacing: 0.5, marginBottom: 8 }}>
                 No players yet — add at least 2.
               </Text>
             )}
 
             {players.length === 1 && (
-              <Text
-                style={{
-                  fontFamily: FONTS.mono,
-                  fontSize: 11,
-                  color: COLORS.ink2,
-                  letterSpacing: 0.5,
-                  marginBottom: 8,
-                }}
-              >
+              <Text style={{ fontFamily: FONTS.mono, fontSize: 11, color: COLORS.ink2, letterSpacing: 0.5, marginBottom: 8 }}>
                 Add one more to continue.
               </Text>
             )}
 
             {/* Dots */}
-            <View
-              style={{
-                marginTop: 24,
-                marginBottom: 8,
-                alignItems: "flex-start",
-              }}
-            >
+            <View style={{ marginTop: 24, marginBottom: 8, alignItems: 'flex-start' }}>
               <Dots total={TOTAL_STEPS} active={step} />
             </View>
           </ScrollView>
@@ -535,19 +415,19 @@ export default function OnboardingScreen() {
             color={canFinish ? COLORS.ink : COLORS.ink2}
             radius={RADIUS.pill}
             onPress={isLast ? (canFinish ? finish : undefined) : goNext}
-            style={{ overflow: "visible" }}
+            style={{ overflow: 'visible' }}
           >
             <Text
               style={{
                 fontFamily: FONTS.uiBold,
                 fontSize: 18,
                 color: COLORS.cream,
-                textAlign: "center",
+                textAlign: 'center',
                 paddingVertical: 18,
                 opacity: isLast && !canFinish ? 0.5 : 1,
               }}
             >
-              {isLast ? "Let's go!" : "Next"}
+              {isLast ? "Let's go!" : 'Next'}
             </Text>
           </StickerButton>
         </View>
