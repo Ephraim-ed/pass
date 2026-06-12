@@ -183,6 +183,11 @@ export default function OnboardingScreen() {
     router.replace('/(tabs)/home');
   }
 
+  function skipIntro() {
+    stepSV.value = SLIDES.length - 1;
+    setStep(CREW_STEP);
+  }
+
   const isCrewStep = step === CREW_STEP;
   const isLast = step === TOTAL_STEPS - 1;
   const canFinish = !isCrewStep || players.length >= 2;
@@ -196,7 +201,7 @@ export default function OnboardingScreen() {
         {/* Skip — only on intro slides */}
         {!isCrewStep && (
           <Pressable
-            onPress={finish}
+            onPress={skipIntro}
             style={{ position: 'absolute', top: insets.top + 14, right: 24, zIndex: 10, padding: 8 }}
           >
             <Text style={{ fontFamily: FONTS.mono, fontSize: 12, color: COLORS.ink2, letterSpacing: 1 }}>
