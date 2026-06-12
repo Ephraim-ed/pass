@@ -1,0 +1,71 @@
+import { PromptPack } from './types';
+
+export const ICEBREAKERS_EASY: PromptPack = {
+  id: 'icebreakers_easy',
+  name: 'Easy Openers',
+  description: 'Light questions anyone can answer.',
+  deck: 'icebreaker',
+  age: 'all',
+  prompts: [
+    "What's the best meal you've had this month?",
+    "If you could only eat one cuisine for a year, which one?",
+    "What's a song you've had on repeat lately?",
+    "Coffee, tea, or neither — and how do you take it?",
+    "What's the last show you binged in one weekend?",
+    "What's your go-to karaoke song, even if you never sing it?",
+    "If you won a free trip leaving tomorrow, where are you going?",
+    "What's a small thing that instantly improves your day?",
+    "What app do you waste the most time on?",
+    "What's your most controversial food opinion?",
+    "What did you want to be when you were 8 years old?",
+    "What's a skill you'd master instantly if you could?",
+    "What's the best piece of advice anyone's given you?",
+    "What's something you're weirdly good at?",
+    "What's a hobby you picked up and dropped within a month?",
+    "If your life had a theme song, what would it be?",
+    "What's the most spontaneous thing you've ever done?",
+    "What's one thing on your bucket list you'll actually do?",
+    "Who in your life makes you laugh the hardest?",
+    "What's a tradition — family or personal — you love?",
+    "What's the strangest job or chore you've ever had?",
+    "If you opened a small shop, what would it sell?",
+  ],
+};
+
+export const ICEBREAKERS_REAL_TALK: PromptPack = {
+  id: 'icebreakers_real_talk',
+  name: 'Real Talk',
+  description: 'Deeper questions for real connection.',
+  deck: 'icebreaker',
+  age: 'all',
+  prompts: [
+    "What's something you've changed your mind about in the last few years?",
+    "What's a compliment you received that stuck with you?",
+    "What are you most proud of that you rarely talk about?",
+    "What's a fear you've beaten — or are working on?",
+    "Who do you wish you kept in touch with?",
+    "What's something you wish people asked you about more?",
+    "When was the last time you tried something for the first time?",
+    "What's a lesson you learned the hard way?",
+    "If you could relive one day from the past year, which one?",
+    "What does your perfect ordinary day look like?",
+  ],
+};
+
+export const ICEBREAKERS_GROUP: PromptPack = {
+  id: 'icebreakers_group',
+  name: 'Group Chaos',
+  description: 'Questions about the people in the room.',
+  deck: 'icebreaker',
+  age: 'all',
+  prompts: [
+    "Which two people in this group would survive longest in a zombie movie, and why?",
+    "What's your first impression of the person to your left?",
+    "Give the person to your right a totally new nickname.",
+    "What do you think this group will be doing 10 years from now?",
+    "If this group started a band, who plays what?",
+    "Who here is most likely to become famous, and for what?",
+    "Which two people here should swap lives for a week?",
+    "Pick someone in the room who'd survive a desert island. Defend your pick.",
+  ],
+};

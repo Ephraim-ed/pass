@@ -1,0 +1,53 @@
+import { PromptPack } from './types';
+
+export const TRUTHS_CLASSIC: PromptPack = {
+  id: 'truths_classic',
+  name: 'Classic Truths',
+  description: 'The all-time party staples.',
+  deck: 'truth',
+  age: 'all',
+  prompts: [
+    "What's your most embarrassing moment?",
+    "Have you ever lied to get out of trouble? What was the lie?",
+    "What's the worst gift you've ever received?",
+    "Have you ever cheated on a test?",
+    "What's your biggest regret?",
+    "Have you ever stood someone up on a date?",
+    "What's the most childish thing you still do?",
+    "Have you ever pretended to be sick to skip something?",
+    "What's a secret you've never told anyone here?",
+    "Who in this room would you most want to be stranded with?",
+    "What's the most money you've spent on something dumb?",
+    "Have you ever stalked someone's social media?",
+    "What's the pettiest reason you've ended a friendship?",
+    "What's your go-to excuse to get out of plans?",
+    "Have you ever told a white lie to a friend to spare their feelings?",
+    "What's the most embarrassing thing you've searched on the internet?",
+    "What's the weirdest dream you've ever had?",
+    "Have you ever laughed at something you shouldn't have?",
+    "What's a bad habit you secretly love?",
+    "Who was your first crush?",
+  ],
+};
+
+export const TRUTHS_SPICY: PromptPack = {
+  id: 'truths_spicy',
+  name: 'Spicy Truths',
+  description: 'Crushes, dates, and red flags.',
+  deck: 'truth',
+  age: '18+',
+  prompts: [
+    "Who was your most embarrassing crush?",
+    "What's the worst date you've ever been on?",
+    "Have you ever ghosted someone? What's your defense?",
+    "What's your most embarrassing dating app story?",
+    "What's the cheesiest pickup line you've actually used?",
+    "What's a red flag you ignored and regretted?",
+    "Have you ever been caught checking someone out?",
+    "What's the boldest romantic move you've ever made?",
+    "Have you ever sent a text to the wrong person? What did it say?",
+    "What's a relationship dealbreaker people would judge you for?",
+    "Have you ever pretended to like a gift from a partner?",
+    "Who in this room would survive a double date with you?",
+  ],
+};

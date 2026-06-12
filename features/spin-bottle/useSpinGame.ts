@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { DARES, TRUTHS } from '@/data/prompts';
+import { PromptDeck, createPromptDeck } from '@/utils/promptDeck';
 
 export type SpinPhase = 'intro' | 'spin' | 'result';
 export type PromptType = 'truth' | 'dare';
@@ -27,8 +27,15 @@ export function useSpinGame(players: string[]) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [round, setRound] = useState(1);
   const currentAngle = useRef(0);
-  const truthIdx = useRef(0);
-  const dareIdx = useRef(0);
+
+  // Spin the Bottle is an 18+ game, so adult packs are in play
+  const truthDeck = useRef<PromptDeck | null>(null);
+  const dareDeck = useRef<PromptDeck | null>(null);
+  function getDeck(type: PromptType): PromptDeck {
+    const ref = type === 'truth' ? truthDeck : dareDeck;
+    if (!ref.current) ref.current = createPromptDeck(type, { includeAdult: true });
+    return ref.current;
+  }
 
   function spin(
     velocity: number,
@@ -56,24 +63,19 @@ export function useSpinGame(players: string[]) {
   }
 
   function pickTruth() {
-    setPrompt(TRUTHS[truthIdx.current % TRUTHS.length]);
-    truthIdx.current += 1;
+    setPrompt(getDeck('truth').draw());
     setPromptType('truth');
     setPhase('result');
   }
 
   function pickDare() {
-    setPrompt(DARES[dareIdx.current % DARES.length]);
-    dareIdx.current += 1;
+    setPrompt(getDeck('dare').draw());
     setPromptType('dare');
     setPhase('result');
   }
 
   function reroll() {
-    const pool = promptType === 'truth' ? TRUTHS : DARES;
-    const ref = promptType === 'truth' ? truthIdx : dareIdx;
-    setPrompt(pool[ref.current % pool.length]);
-    ref.current += 1;
+    setPrompt(getDeck(promptType).draw());
   }
 
   function startGame() { setPhase('spin'); }

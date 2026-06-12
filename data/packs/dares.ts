@@ -1,0 +1,31 @@
+import { PromptPack } from './types';
+
+export const DARES_CLASSIC: PromptPack = {
+  id: 'dares_classic',
+  name: 'Classic Dares',
+  description: 'Low-stakes chaos for any room.',
+  deck: 'dare',
+  age: 'all',
+  prompts: [
+    "Do your best impression of someone in this room.",
+    "Text the 5th contact in your phone 'I have a confession...' and show us the response.",
+    "Let the group go through your recent photos for 30 seconds.",
+    "Do 10 jumping jacks while singing your favorite song.",
+    "Let someone post anything they want on your social media.",
+    "Talk in an accent for the next 3 rounds.",
+    "Do your best runway walk across the room.",
+    "Show the last thing you searched on YouTube.",
+    "Call a family member and sing Happy Birthday to them.",
+    "Do a handstand for 10 seconds (or try).",
+    "Let the group read your last 5 text messages out loud.",
+    "Speak only in questions for the next 2 rounds.",
+    "Do your best celebrity impression until someone guesses who it is.",
+    "Send a voice note saying 'I love you' to the last person you texted.",
+    "Let someone give you a new hairstyle for 5 minutes.",
+    "Say something nice about every person in the room.",
+    "Act out a movie scene without dialogue until someone guesses it.",
+    "Let the group give you a dare within a dare.",
+    "Put ice in your shirt for 30 seconds.",
+    "Sing the chorus of the last song you listened to.",
+  ],
+};

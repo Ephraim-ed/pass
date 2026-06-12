@@ -84,8 +84,8 @@ The social core — these turn quick games into real conversations.
 
 ## 7. Content Systems (multiplies everything above)
 
-- 🟡 **Prompt pack architecture** — restructure `data/prompts.ts` into packs: `{ id, name, deck: 'truth'|'dare'|'nhie'|'wyr', ageRating, prompts[] }`. Every question game then reads from the same system, and adding content = adding a file.
-- 🟡 **No-repeat shuffle** — track used prompts per session so nothing repeats until a pool is exhausted (currently round-robin from index 0 every launch).
+- ✅ **Prompt pack architecture** — done: `data/packs/` holds age-rated packs per deck type; `utils/promptDeck.ts` is the shared draw engine; the icebreaker intro has a pack picker. See DOCS.md §4.
+- ✅ **No-repeat shuffle** — done: `createPromptDeck` shuffles and never repeats until the pool is exhausted.
 - 🔴 **Downloadable packs (still offline-first)** — fetch new packs when online, cache forever in AsyncStorage, play offline. The only network feature worth having.
 
 ---

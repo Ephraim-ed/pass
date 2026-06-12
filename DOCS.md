@@ -145,9 +145,41 @@ The `id` field drives two things automatically:
 - **Routing** — `app/game/[id].tsx` matches it, and `spin_bottle` maps to `app/game/spin-bottle.tsx`.
 - **Icons** — `GameIcon` switches on `game.id` to render the right SVG.
 
-### `data/prompts.ts`
+### `data/packs/` — the prompt pack system
 
-Plain arrays of strings: `TRUTHS[]` and `DARES[]`. Spin the Bottle draws from these in a round-robin pattern so prompts don't repeat immediately.
+All question content lives in **packs**. A pack is a named, age-rated bundle of prompts that feeds one deck type:
+
+```ts
+// data/packs/types.ts
+type DeckType = 'truth' | 'dare' | 'icebreaker';  // extend per new question game
+
+type PromptPack = {
+  id: string;
+  name: string;          // shown in pack pickers
+  description: string;
+  deck: DeckType;
+  age: '18+' | 'all';    // 18+ packs are excluded unless a game opts in
+  prompts: string[];
+};
+```
+
+- **Content files** — `truths.ts`, `dares.ts`, `icebreakers.ts` each export one or more packs.
+- **Registry** — `data/packs/index.ts` lists every pack in `PACKS` and exposes:
+  - `getPacksForDeck(deck, { packIds?, includeAdult? })` — pack metadata, for pickers
+  - `getPrompts(deck, opts)` — merged prompt strings from matching packs
+
+**Adding a pack** = add a `PromptPack` object in the matching content file (or a new file) and list it in `PACKS`. It immediately appears in any game using that deck type, including pack-picker UIs.
+
+### `utils/promptDeck.ts` — the deck engine
+
+`createPromptDeck(deck, opts)` returns `{ draw, size }`: a shuffled deck that never repeats a prompt until every prompt has been drawn once, then reshuffles (avoiding a back-to-back repeat across the boundary). Every question game should draw through this instead of indexing arrays.
+
+```ts
+const deck = createPromptDeck('icebreaker', { packIds: ['icebreakers_easy'] });
+deck.draw(); // → next question
+```
+
+Games hold the deck in a `useRef` so it survives re-renders (see `useSpinGame` / `useIcebreaker`).
 
 ---
 

@@ -75,13 +75,57 @@ export default function IcebreakerScreen() {
               <MetaPill label="Chill" />
             </View>
 
-            <Sticker color={COLORS.cream} radius={RADIUS.xl} shadowY={3} style={{ width: '100%', marginBottom: 32 }}>
+            <Sticker color={COLORS.cream} radius={RADIUS.xl} shadowY={3} style={{ width: '100%', marginBottom: 20 }}>
               <View style={{ padding: 16 }}>
                 <Text style={{ fontFamily: FONTS.uiBold, fontSize: 14, color: COLORS.inkSoft, lineHeight: 22 }}>
                   Read your question out loud and answer it honestly — stories beat one-word answers. Then pass the phone to the next player. No skipping unless the group allows it!
                 </Text>
               </View>
             </Sticker>
+
+            {/* Pack picker */}
+            <View style={{ width: '100%', marginBottom: 28 }}>
+              <Text
+                style={{
+                  fontFamily: FONTS.mono,
+                  fontSize: 10,
+                  color: COLORS.ink2,
+                  letterSpacing: 1.5,
+                  marginBottom: 10,
+                }}
+              >
+                QUESTION PACKS
+              </Text>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 8 }}>
+                {game.packs.map((pack) => {
+                  const active = game.selectedPacks.includes(pack.id);
+                  return (
+                    <Pressable
+                      key={pack.id}
+                      onPress={() => game.togglePack(pack.id)}
+                      style={{
+                        paddingHorizontal: 14,
+                        paddingVertical: 9,
+                        borderRadius: RADIUS.pill,
+                        borderWidth: 2,
+                        borderColor: COLORS.ink,
+                        backgroundColor: active ? COLORS.ink : COLORS.cream,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: FONTS.uiBold,
+                          fontSize: 13,
+                          color: active ? COLORS.cream : COLORS.ink,
+                        }}
+                      >
+                        {pack.name} · {pack.prompts.length}
+                      </Text>
+                    </Pressable>
+                  );
+                })}
+              </View>
+            </View>
 
             <StickerButton
               color={COLORS.mint}
