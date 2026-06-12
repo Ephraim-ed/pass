@@ -7,17 +7,20 @@
 // Unlike spin-bottle (single monolith file), this game is fully modular:
 // each phase is its own file under features/secret-number/.
 
-import { useRouter } from 'expo-router';
-import { View, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useApp } from '@/store/useApp';
-import { useSecretNumber } from '@/features/secret-number/useSecretNumber';
-import PhaseRules from './_rules';
-import PhaseCategory from './_category';
-import PhaseDistribution from './_distribution';
-import PhaseSorting from './_sorting';
-import PhaseResults from './_results';
-import { COLORS } from '@/theme/tokens';
+import { useRouter } from "expo-router";
+import { StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import { useApp } from "@/store/useApp";
+import { useSecretNumber } from "@/features/secret-number/useSecretNumber";
+import PhaseRules from "./_rules";
+import PhaseCategory from "./_category";
+import PhaseDistribution from "./_distribution";
+import PhaseSorting from "./_sorting";
+import PhaseResults from "./_results";
+import { COLORS } from "@/theme/tokens";
 
 export default function SecretNumberScreen() {
   const insets = useSafeAreaInsets();
@@ -26,49 +29,49 @@ export default function SecretNumberScreen() {
   const game = useSecretNumber(state.players);
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
-      {game.phase === 'rules' && (
+    <SafeAreaView style={[styles.container]}>
+      {game.phase === "rules" && (
         <PhaseRules
           onBack={() => router.back()}
-          onStart={() => game.setPhase('category')}
+          onStart={() => game.setPhase("category")}
         />
       )}
-      {game.phase === 'category' && (
+      {game.phase === "category" && (
         <PhaseCategory
           selectedCategory={game.category}
           onSelectCategory={game.selectCategory}
-          onBack={() => game.setPhase('rules')}
-          onNext={() => game.setPhase('distribution')}
+          onBack={() => game.setPhase("rules")}
+          onNext={() => game.setPhase("distribution")}
         />
       )}
-      {game.phase === 'distribution' && (
+      {game.phase === "distribution" && (
         <PhaseDistribution
           players={game.players}
           assignments={game.assignments}
           onGenerate={game.generate}
-          onBack={() => game.setPhase('category')}
-          onStartGame={() => game.setPhase('sorting')}
+          onBack={() => game.setPhase("category")}
+          onStartGame={() => game.setPhase("sorting")}
         />
       )}
-      {game.phase === 'sorting' && (
+      {game.phase === "sorting" && (
         <PhaseSorting
           assignments={game.assignments}
           avatars={state.avatars}
-          onBack={() => game.setPhase('distribution')}
+          onBack={() => game.setPhase("distribution")}
           onFinalize={game.finalize}
         />
       )}
-      {game.phase === 'results' && (
+      {game.phase === "results" && (
         <PhaseResults
           submittedOrder={game.submittedOrder ?? []}
           correctOrder={game.correctOrder}
           avatars={state.avatars}
           onExit={game.reset}
-          onRedo={() => game.setPhase('category')}
-          onGoHome={() => router.replace('/')}
+          onRedo={() => game.setPhase("category")}
+          onGoHome={() => router.replace("/")}
         />
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
