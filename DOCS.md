@@ -75,20 +75,23 @@ pass/
 
 ## 2. Libraries
 
+Versions track **Expo SDK 54** — `package.json` is authoritative; realign with `npx expo install --fix` after SDK changes.
+
 | Library | Version | Purpose |
 |---|---|---|
-| `expo` | ~56.0.8 | SDK base |
-| `expo-router` | ~5.0.7 | File-based navigation |
-| `expo-font` | ~13.3.2 | Font loading |
-| `expo-linear-gradient` | ~14.1.5 | Sticker gradient fill |
-| `expo-haptics` | ~14.1.4 | Tactile feedback on button press and spin land |
-| `expo-splash-screen` | ^56.0.10 | Hold splash until fonts are loaded |
-| `react-native-reanimated` | 4.3.1 | Animations (Sticker press, Bub idle loops, bottle spin, flip card) |
-| `react-native-gesture-handler` | ~2.31.1 | Pan gesture for onboarding swipe |
-| `react-native-svg` | 15.15.4 | Game icons and Bub mascot |
-| `react-native-safe-area-context` | ~5.7.0 | Notch / home indicator insets |
-| `react-native-screens` | 4.25.2 | Native screen optimisation for expo-router |
-| `@react-native-async-storage/async-storage` | 2.1.2 | Persisting app state between sessions |
+| `expo` | ^54.0.35 | SDK base |
+| `expo-router` | ~6.0.24 | File-based navigation |
+| `expo-font` | ~14.0.12 | Font loading |
+| `expo-linear-gradient` | ~15.0.8 | Sticker gradient fill |
+| `expo-haptics` | ~15.0.8 | Tactile feedback on button press and spin land |
+| `expo-splash-screen` | ~31.0.13 | Hold splash until fonts are loaded |
+| `expo-image-picker` | ~17.0.11 | Player avatar photos |
+| `react-native-reanimated` | ~4.1.1 | Animations (Sticker press, Bub idle loops, bottle spin, flip card) |
+| `react-native-gesture-handler` | ~2.28.0 | Pan gesture for onboarding swipe |
+| `react-native-svg` | 15.12.1 | Game icons and Bub mascot |
+| `react-native-safe-area-context` | ~5.6.0 | Notch / home indicator insets |
+| `react-native-screens` | ~4.16.0 | Native screen optimisation for expo-router |
+| `@react-native-async-storage/async-storage` | 2.2.0 | Persisting app state between sessions |
 | `@expo-google-fonts/bricolage-grotesque` | ^0.4.1 | Display font (headings) |
 | `@expo-google-fonts/geist` | ^0.4.2 | UI font (body / buttons) |
 | `@expo-google-fonts/geist-mono` | ^0.4.2 | Mono font (labels, badges) |
