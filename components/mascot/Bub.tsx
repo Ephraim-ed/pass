@@ -36,12 +36,15 @@ type Props = {
   pose?: BubPose;
   size?: number;
   color?: string;
+  /** Adds devil horns + a mischievous brow. Used for the imposter reveal. */
+  devil?: boolean;
 };
 
 export default function Bub({
   pose = "idle",
   size = 120,
   color = COLORS.yellow,
+  devil = false,
 }: Props) {
   const bodyRot = useSharedValue(0);
   const bodyY = useSharedValue(0);
@@ -510,6 +513,28 @@ export default function Bub({
                 fill={COLORS.ink2}
                 stroke={COLORS.ink}
                 strokeWidth="2"
+              />
+            </>
+          )}
+
+          {/* Devil horns — drawn before the body so its top edge hides the base */}
+          {devil && (
+            <>
+              {/* Left horn */}
+              <Path
+                d="M38 30 Q29 16 33 5 Q42 16 47 28 Z"
+                fill={color}
+                stroke={COLORS.ink}
+                strokeWidth="2.5"
+                strokeLinejoin="round"
+              />
+              {/* Right horn */}
+              <Path
+                d="M82 30 Q91 16 87 5 Q78 16 73 28 Z"
+                fill={color}
+                stroke={COLORS.ink}
+                strokeWidth="2.5"
+                strokeLinejoin="round"
               />
             </>
           )}

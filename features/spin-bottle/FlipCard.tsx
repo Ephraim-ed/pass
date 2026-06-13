@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   card: {
-    ...StyleSheet.absoluteFill,
+    ...StyleSheet.absoluteFillObject,
     borderRadius: RADIUS.xl,
     borderWidth: 2.5,
     borderColor: COLORS.ink,
