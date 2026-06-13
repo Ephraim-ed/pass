@@ -307,29 +307,41 @@ export default function HomeScreen() {
               alignItems: "flex-start",
             }}
           >
-            <View>
-              <Text
-                style={{
-                  fontFamily: FONTS.mono,
-                  fontSize: 11,
-                  color: COLORS.ink2,
-                  letterSpacing: 1.2,
-                }}
-              >
-                {dayStr} · {timeStr}
-              </Text>
-              <Text
-                style={{
-                  fontFamily: FONTS.display,
-                  fontSize: 38,
-                  color: COLORS.ink,
-                  lineHeight: 38 * 0.95,
-                  letterSpacing: -38 * 0.025,
-                  marginTop: 4,
-                }}
-              >
-                {"Let's get\nloud."}
-              </Text>
+            {/* Bub host + greeting */}
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 10,
+                flex: 1,
+                marginRight: 8,
+              }}
+            >
+              <Bub pose="wave" size={58} color={COLORS.yellow} />
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={{
+                    fontFamily: FONTS.mono,
+                    fontSize: 11,
+                    color: COLORS.ink2,
+                    letterSpacing: 1.2,
+                  }}
+                >
+                  {dayStr} · {timeStr}
+                </Text>
+                <Text
+                  style={{
+                    fontFamily: FONTS.display,
+                    fontSize: 34,
+                    color: COLORS.ink,
+                    lineHeight: 34 * 0.95,
+                    letterSpacing: -34 * 0.025,
+                    marginTop: 4,
+                  }}
+                >
+                  {"Let's get\nloud."}
+                </Text>
+              </View>
             </View>
 
             {/* Settings button */}
@@ -659,6 +671,22 @@ export default function HomeScreen() {
               />
             </View>
           ))}
+        </View>
+
+        {/* ── Bub sign-off ── */}
+        <View style={{ alignItems: "center", marginTop: 28, paddingHorizontal: 22 }}>
+          <Bub pose="cheer" size={88} color={COLORS.mint} />
+          <Text
+            style={{
+              fontFamily: FONTS.mono,
+              fontSize: 10,
+              color: COLORS.ink2,
+              letterSpacing: 1.4,
+              marginTop: 6,
+            }}
+          >
+            THAT'S THE WHOLE LINEUP
+          </Text>
         </View>
       </ScrollView>
 

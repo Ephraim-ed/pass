@@ -306,6 +306,11 @@ export default function ImposterScreen() {
                 Play again
               </Text>
             </StickerButton>
+            <StickerButton color={COLORS.yellow} radius={RADIUS.pill} onPress={() => router.push('/winner')} style={{ width: '100%', marginBottom: 12 }}>
+              <Text style={{ fontFamily: FONTS.uiBold, fontSize: 17, color: COLORS.ink, textAlign: 'center', paddingVertical: 16 }}>
+                👑 Crown the winner
+              </Text>
+            </StickerButton>
             <Pressable onPress={game.backToIntro} style={{ paddingVertical: 12 }}>
               <Text style={{ fontFamily: FONTS.uiBold, fontSize: 14, color: COLORS.ink2, textAlign: 'center' }}>
                 Change packs

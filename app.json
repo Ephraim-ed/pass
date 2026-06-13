@@ -24,7 +24,21 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "PASS uses your photos so you can add player avatars and winner shots.",
+          "cameraPermission": "PASS uses the camera to capture the winning moment."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "PASS saves the winner story card to your photo library.",
+          "savePhotosPermission": "PASS saves the winner story card to your photo library."
+        }
+      ]
     ]
   }
 }
